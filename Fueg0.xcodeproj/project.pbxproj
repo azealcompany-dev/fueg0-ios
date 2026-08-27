@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0784C44A392E0F13CF57CFE2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EE045EF92399ECB2A28F2D /* HomeView.swift */; };
+		11213065F7D3986A5E79B007 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5EDC3EBB49F170EC86D25B /* PaywallView.swift */; };
 		1137D65D775AF98B36918CD8 /* FirebaseBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBA8734F5B50F131FA6FEEF /* FirebaseBootstrap.swift */; };
 		2AB2B733686A1325EED77E70 /* IgniteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59A32FCE355F85368E5169 /* IgniteView.swift */; };
 		323634A13CE57A0FAE4C06E0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1800AC9B22FFBB6B155F272B /* LoginView.swift */; };
@@ -17,6 +18,7 @@
 		4C5DEBDA1DF5B6031F9AE8F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2BF146DBF047B34681F0EB09 /* Assets.xcassets */; };
 		52A6AC0633BDD148150AEE69 /* GoalsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */; };
 		572B9106533E9282FFC41D68 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5060C8AEC10A7383CB9423AD /* FirebaseFirestore */; };
+		587C2F7B070A34A572644909 /* PremiumGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6E6E0E5B78416B961F54C0 /* PremiumGate.swift */; };
 		77986DE91AD0B701C95F754F /* Tribe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F903862407A4F48F71819DEF /* Tribe.swift */; };
 		795AB3DE4EE6994EC689564A /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C364F711F77F01A07147EB /* Palette.swift */; };
 		7F1C7F94FEB608FF26FD60BA /* TribeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A615A3CC1A2A21A294EFE53A /* TribeRow.swift */; };
@@ -33,6 +35,7 @@
 		CAD6A4673E4B5DA04FA2C53F /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 46C3FA60070F6CE858242382 /* GoogleSignIn */; };
 		CBE08A0C0585AFF0D53A2C15 /* EmberButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFDC937A2765C033E5245A4 /* EmberButton.swift */; };
 		D5DB6B2059B53D71A9E395FA /* TribeHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474162008F4A95DF19CCF932 /* TribeHubView.swift */; };
+		D816B4F9A39D347D03C50355 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1FD680F84C1DC08D6ED4C3 /* StoreService.swift */; };
 		DFF1578948D4699B178AF9AD /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 55356B00B06EB20DDD0C3D1B /* FirebaseCore */; };
 		EB9E138BE95B4AEDC8EE4A6F /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9AE187B91B588CA5541132 /* MainTabView.swift */; };
 		EF8E862AA8F714FDFE7871AC /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADE347193F21F74558CAB0 /* AppSession.swift */; };
@@ -67,7 +70,10 @@
 		EEBA8734F5B50F131FA6FEEF /* FirebaseBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBootstrap.swift; sourceTree = "<group>"; };
 		F12729267384D05F7B407FDE /* AuthGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGateway.swift; sourceTree = "<group>"; };
 		F903862407A4F48F71819DEF /* Tribe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tribe.swift; sourceTree = "<group>"; };
+		FA5EDC3EBB49F170EC86D25B /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		FB1FD680F84C1DC08D6ED4C3 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		FC9AE187B91B588CA5541132 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		FF6E6E0E5B78416B961F54C0 /* PremiumGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumGate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +124,7 @@
 				1800AC9B22FFBB6B155F272B /* LoginView.swift */,
 				FC9AE187B91B588CA5541132 /* MainTabView.swift */,
 				D408A48F92358BC707FB6032 /* OnboardingView.swift */,
+				FA5EDC3EBB49F170EC86D25B /* PaywallView.swift */,
 				8DA1DED8E4C80B5A2AFB69AF /* ProgressHubView.swift */,
 				792BB195007E278F92C38C03 /* SettingsHubView.swift */,
 				E7B47903C19F0F70E362143C /* SplashView.swift */,
@@ -161,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				9CFDC937A2765C033E5245A4 /* EmberButton.swift */,
+				FF6E6E0E5B78416B961F54C0 /* PremiumGate.swift */,
 				A615A3CC1A2A21A294EFE53A /* TribeRow.swift */,
 			);
 			path = Components;
@@ -170,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */,
+				FB1FD680F84C1DC08D6ED4C3 /* StoreService.swift */,
 				CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */,
 			);
 			path = Services;
@@ -279,10 +288,13 @@
 				EB9E138BE95B4AEDC8EE4A6F /* MainTabView.swift in Sources */,
 				8C5E315E5F1E4D9BB5830CC4 /* OnboardingView.swift in Sources */,
 				795AB3DE4EE6994EC689564A /* Palette.swift in Sources */,
+				11213065F7D3986A5E79B007 /* PaywallView.swift in Sources */,
+				587C2F7B070A34A572644909 /* PremiumGate.swift in Sources */,
 				ADB93ABDB038C66A1695287D /* ProgressHubView.swift in Sources */,
 				ABF4421EA1A443BC9C9625C1 /* RootView.swift in Sources */,
 				F45149F9EABDCDB466346C52 /* SettingsHubView.swift in Sources */,
 				C626D5095F9854AE87C7F331 /* SplashView.swift in Sources */,
+				D816B4F9A39D347D03C50355 /* StoreService.swift in Sources */,
 				77986DE91AD0B701C95F754F /* Tribe.swift in Sources */,
 				D5DB6B2059B53D71A9E395FA /* TribeHubView.swift in Sources */,
 				7F1C7F94FEB608FF26FD60BA /* TribeRow.swift in Sources */,

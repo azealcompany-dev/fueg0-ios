@@ -2,7 +2,9 @@ import SwiftUI
 
 struct ProgressHubView: View {
     @Environment(AppSession.self) private var session
+    @Environment(StoreService.self) private var store
     @State private var model = DailyLawsModel()
+    @State private var showPaywall = false
 
     var body: some View {
         Group {
@@ -31,6 +33,7 @@ struct ProgressHubView: View {
         .onChange(of: session.ignitedToday) { _, ignited in
             model.syncIgniteLaws(ignitedToday: ignited)
         }
+        .fueg0PaywallSheet($showPaywall)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 if !model.checkable.isEmpty {
@@ -72,6 +75,13 @@ struct ProgressHubView: View {
 
     private var lawsList: some View {
         List {
+            Section {
+                progressExtras
+                    .fueg0RowSurface()
+            } header: {
+                Text("Predictive Progress")
+            }
+
             Section {
                 overviewCard
                     .fueg0RowSurface()
@@ -132,6 +142,25 @@ struct ProgressHubView: View {
                 .padding(.vertical, Spacing.md)
             }
             .background(.ultraThinMaterial)
+        }
+    }
+
+    @ViewBuilder
+    private var progressExtras: some View {
+        if store.isLoading && !store.isPremium {
+            HStack(spacing: 12) {
+                ProgressView().tint(Palette.ember)
+                Text("Checking premium…")
+                    .font(.system(size: 15))
+                    .foregroundStyle(Palette.textMuted)
+            }
+            .padding(.vertical, 8)
+        } else if store.isPremium {
+            PredictiveProgressExtras(overview: model.overview)
+        } else {
+            PremiumGateCard(featureName: "Predictive Progress") {
+                showPaywall = true
+            }
         }
     }
 

@@ -67,6 +67,7 @@ schemes:
         Fueg0: all
     run:
       config: Debug
+      storeKitConfiguration: ../Fueg0.storekit
     profile:
       config: Release
     analyze:

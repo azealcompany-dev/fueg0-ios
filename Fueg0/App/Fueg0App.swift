@@ -4,17 +4,20 @@ import SwiftUI
 @main
 struct Fueg0App: App {
     @State private var session: AppSession
+    @State private var store: StoreService
 
     init() {
         FirebaseBootstrap.configure()
         Self.configureChrome()
         _session = State(initialValue: AppSession())
+        _store = State(initialValue: StoreService())
     }
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(session)
+                .environment(store)
                 .preferredColorScheme(.dark)
                 .tint(Palette.ember)
                 .onOpenURL { url in

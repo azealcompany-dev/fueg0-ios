@@ -2,7 +2,9 @@ import SwiftUI
 
 struct SettingsHubView: View {
     @Environment(AppSession.self) private var session
+    @Environment(StoreService.self) private var store
     @State private var showTribeSelection = false
+    @State private var showPaywall = false
 
     var body: some View {
         List {
@@ -40,6 +42,33 @@ struct SettingsHubView: View {
                 .fueg0RowSurface()
             } header: {
                 Text("Account")
+            }
+
+            Section {
+                Button {
+                    showPaywall = true
+                } label: {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Fueg0 Premium")
+                                .foregroundStyle(Palette.textPrimary)
+                            Text(store.isPremium
+                                 ? (store.isOnTrial ? "Trial active" : "Subscription active")
+                                 : "Predictive Progress and insights")
+                                .font(.system(size: 13))
+                                .foregroundStyle(Palette.textMuted)
+                        }
+                        Spacer()
+                        Text(store.isPremium ? "Active" : store.priceLabel)
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundStyle(Palette.ember)
+                    }
+                }
+                .fueg0RowSurface()
+            } header: {
+                Text("Premium")
+            } footer: {
+                Text("Purchases go through Apple. Restore from the paywall if you already subscribed.")
             }
 
             if session.tribe == nil {
@@ -82,6 +111,17 @@ struct SettingsHubView: View {
             }
 
             Section {
+                Link("Privacy Policy", destination: LegalLinks.privacy)
+                    .foregroundStyle(Palette.textPrimary)
+                    .fueg0RowSurface()
+                Link("Terms of Use", destination: LegalLinks.terms)
+                    .foregroundStyle(Palette.textPrimary)
+                    .fueg0RowSurface()
+            } header: {
+                Text("Legal")
+            }
+
+            Section {
                 Text("Version 1.0 (1)")
                     .font(.system(size: 13))
                     .foregroundStyle(Palette.textMuted)
@@ -93,6 +133,7 @@ struct SettingsHubView: View {
         .fueg0ListChrome()
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.large)
+        .fueg0PaywallSheet($showPaywall)
         .sheet(isPresented: $showTribeSelection) {
             NavigationStack {
                 TribeSelectionView()

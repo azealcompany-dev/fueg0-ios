@@ -23,13 +23,14 @@ In this native port:
 - Tribe tab: pick one of seven tribes, weekly leaderboard, membership feed
 - Tab shell with the iOS 18 `Tab` API, system tab bar (Liquid Glass on iOS 26)
 - Progress: native Daily Laws checklist (Flutter prefs + tribe awards)
+- StoreKit 2 paywall for `fueg0_premium_monthly` (7-day intro offer from the store)
 
 Still Flutter-only:
 
 - Daily Fire YouTube (no API key in this repo)
 - Hell Fire canvas, streak calendar
 - Body metrics, custom goals editor, achievements
-- Premium paywall / StoreKit, notifications, progress reset
+- Notifications, progress reset
 
 ## Generate & build
 
@@ -39,3 +40,5 @@ xcodebuild -scheme Fueg0 -destination 'platform=iOS Simulator,name=iPhone 16e' -
 ```
 
 `GoogleService-Info.plist` is copied from the Flutter iOS target. Do not invent API keys.
+
+`Fueg0.storekit` is a local StoreKit configuration (monthly + 7-day free intro). Device purchases still need the product in App Store Connect. Entitlement comes from StoreKit 2 `Transaction.currentEntitlement`, not a local trial flag.
