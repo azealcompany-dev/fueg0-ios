@@ -12,12 +12,15 @@
 		2AB2B733686A1325EED77E70 /* IgniteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59A32FCE355F85368E5169 /* IgniteView.swift */; };
 		323634A13CE57A0FAE4C06E0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1800AC9B22FFBB6B155F272B /* LoginView.swift */; };
 		3502832686405E10F4788B91 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6D667C26A2E4C9F2445FA178 /* PrivacyInfo.xcprivacy */; };
+		3F615FC25F0026D1A993F073 /* TribeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */; };
 		4C5DEBDA1DF5B6031F9AE8F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2BF146DBF047B34681F0EB09 /* Assets.xcassets */; };
 		572B9106533E9282FFC41D68 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5060C8AEC10A7383CB9423AD /* FirebaseFirestore */; };
 		77986DE91AD0B701C95F754F /* Tribe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F903862407A4F48F71819DEF /* Tribe.swift */; };
 		795AB3DE4EE6994EC689564A /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C364F711F77F01A07147EB /* Palette.swift */; };
+		7F1C7F94FEB608FF26FD60BA /* TribeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A615A3CC1A2A21A294EFE53A /* TribeRow.swift */; };
 		87DEA6F076662E2B6AD173ED /* Fueg0App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30066E09E4A91A0FAC9DDD82 /* Fueg0App.swift */; };
 		8C5E315E5F1E4D9BB5830CC4 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A48F92358BC707FB6032 /* OnboardingView.swift */; };
+		8E6509A77A0134E577D9BD47 /* TribeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B82853A10E18085D245248 /* TribeSelectionView.swift */; };
 		989FA2E0CC41529F1F982326 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15F2EAADD03CB33497AB89EC /* GoogleService-Info.plist */; };
 		ABF4421EA1A443BC9C9625C1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F3AE00E7AA72B4534AF4E8 /* RootView.swift */; };
 		ADB93ABDB038C66A1695287D /* ProgressHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA1DED8E4C80B5A2AFB69AF /* ProgressHubView.swift */; };
@@ -35,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04B82853A10E18085D245248 /* TribeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeSelectionView.swift; sourceTree = "<group>"; };
 		15F2EAADD03CB33497AB89EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1800AC9B22FFBB6B155F272B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		28DF3B9DAB70586EC39F2EB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -49,8 +53,10 @@
 		8DA1DED8E4C80B5A2AFB69AF /* ProgressHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHubView.swift; sourceTree = "<group>"; };
 		97188A81BC0D8FBC9CAFB763 /* Gamification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamification.swift; sourceTree = "<group>"; };
 		9CFDC937A2765C033E5245A4 /* EmberButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberButton.swift; sourceTree = "<group>"; };
+		A615A3CC1A2A21A294EFE53A /* TribeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeRow.swift; sourceTree = "<group>"; };
 		B2F3AE00E7AA72B4534AF4E8 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B9EE045EF92399ECB2A28F2D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeService.swift; sourceTree = "<group>"; };
 		D408A48F92358BC707FB6032 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		E7B47903C19F0F70E362143C /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EDADE347193F21F74558CAB0 /* AppSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
@@ -90,6 +96,7 @@
 				C4817AFF5BBAFB92F61B0222 /* Components */,
 				93D6D24C3D990E9112D8256E /* Models */,
 				5A434E54FCB534E05CC7A18F /* Screens */,
+				C5478CDEECAD31BF1B7570B3 /* Services */,
 				1649E1802FD14B13538CD3E9 /* Theme */,
 				2BF146DBF047B34681F0EB09 /* Assets.xcassets */,
 				15F2EAADD03CB33497AB89EC /* GoogleService-Info.plist */,
@@ -111,6 +118,7 @@
 				792BB195007E278F92C38C03 /* SettingsHubView.swift */,
 				E7B47903C19F0F70E362143C /* SplashView.swift */,
 				474162008F4A95DF19CCF932 /* TribeHubView.swift */,
+				04B82853A10E18085D245248 /* TribeSelectionView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -148,8 +156,17 @@
 			isa = PBXGroup;
 			children = (
 				9CFDC937A2765C033E5245A4 /* EmberButton.swift */,
+				A615A3CC1A2A21A294EFE53A /* TribeRow.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		C5478CDEECAD31BF1B7570B3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		DBD5356371FAA47F9CDE24BA = {
@@ -260,6 +277,9 @@
 				C626D5095F9854AE87C7F331 /* SplashView.swift in Sources */,
 				77986DE91AD0B701C95F754F /* Tribe.swift in Sources */,
 				D5DB6B2059B53D71A9E395FA /* TribeHubView.swift in Sources */,
+				7F1C7F94FEB608FF26FD60BA /* TribeRow.swift in Sources */,
+				8E6509A77A0134E577D9BD47 /* TribeSelectionView.swift in Sources */,
+				3F615FC25F0026D1A993F073 /* TribeService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

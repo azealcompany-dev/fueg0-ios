@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsHubView: View {
     @Environment(AppSession.self) private var session
+    @State private var showTribeSelection = false
 
     var body: some View {
         ScrollView {
@@ -31,6 +32,23 @@ struct SettingsHubView: View {
                             .font(.system(size: 14))
                             .foregroundStyle(Palette.textMuted)
                             .lineSpacing(3)
+                    }
+                }
+
+                if session.tribe == nil {
+                    SurfaceCard {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Tribe")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(Palette.textPrimary)
+                            Text("You have not pledged a pack yet. Join one of the seven tribes to earn points together.")
+                                .font(.system(size: 14))
+                                .foregroundStyle(Palette.textMuted)
+                                .lineSpacing(3)
+                        }
+                    }
+                    EmberButton(title: "Choose a tribe") {
+                        showTribeSelection = true
                     }
                 }
 
@@ -77,5 +95,17 @@ struct SettingsHubView: View {
         .background(Palette.background.ignoresSafeArea())
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showTribeSelection) {
+            NavigationStack {
+                TribeSelectionView()
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Close") { showTribeSelection = false }
+                                .foregroundStyle(Palette.textSecondary)
+                        }
+                    }
+            }
+            .preferredColorScheme(.dark)
+        }
     }
 }

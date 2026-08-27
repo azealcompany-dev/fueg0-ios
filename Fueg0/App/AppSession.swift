@@ -9,6 +9,12 @@ struct IgniteResult: Equatable {
     let alreadyComplete: Bool
 }
 
+enum TribeJoinResult: Equatable {
+    case joined
+    case alreadyMember
+    case failed(String)
+}
+
 @MainActor
 @Observable
 final class AppSession {
@@ -29,6 +35,7 @@ final class AppSession {
         static let xp = "fueg0.native.xp"
         static let level = "fueg0.native.level"
         static let streak = "fueg0.native.streak"
+        static let tribeContributions = "fueg0.native.tribeContributions"
     }
 
     var phase: Phase = .splash
@@ -44,6 +51,8 @@ final class AppSession {
     var userEmail: String?
     var isBusy: Bool = false
     var authError: String?
+    var tribeContributions: Int = 0
+    var tribeSyncError: String?
 
     private var splashFinished = false
     private var cloudProfileExists = false
@@ -61,6 +70,7 @@ final class AppSession {
         level = storedLevel
         streakDays = defaults.integer(forKey: Keys.streak)
         rank = Gamification.rank(forLevel: storedLevel)
+        tribeContributions = defaults.integer(forKey: Keys.tribeContributions)
 
         let current = Auth.auth().currentUser
         userUID = current?.uid
@@ -96,6 +106,7 @@ final class AppSession {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         displayName = trimmed.isEmpty ? (displayName == "Warrior" ? "Warrior" : displayName) : trimmed
         if displayName.isEmpty { displayName = "Warrior" }
+        let previousTribeID = self.tribe?.id
         self.tribe = tribe
 
         let defaults = UserDefaults.standard
@@ -105,7 +116,17 @@ final class AppSession {
         }
         persistLocal()
         phase = .main
-        Task { await persistCloud() }
+        Task {
+            await persistCloud()
+            if let tribe {
+                _ = await commitTribe(tribe, previousID: previousTribeID)
+            }
+        }
+    }
+
+    @discardableResult
+    func joinTribe(_ tribe: Tribe) async -> TribeJoinResult {
+        await commitTribe(tribe, previousID: self.tribe?.id)
     }
 
     @discardableResult
@@ -247,10 +268,43 @@ final class AppSession {
         rank = Gamification.rank(forLevel: level)
     }
 
+    private func commitTribe(_ tribe: Tribe, previousID: String?) async -> TribeJoinResult {
+        guard let normalized = Tribe.normalizeID(tribe.id), let resolved = Tribe.byID(normalized) else {
+            tribeSyncError = "Invalid tribe selection. Please try again."
+            return .failed("Invalid tribe selection. Please try again.")
+        }
+
+        self.tribe = resolved
+        persistLocal()
+
+        guard let uid = Auth.auth().currentUser?.uid else {
+            tribeSyncError = "Sign in to save your tribe across devices."
+            return .failed("Sign in to join a tribe.")
+        }
+
+        do {
+            try await TribeService().writeMembership(uid: uid, tribeID: normalized)
+            tribeSyncError = nil
+            if previousID != normalized {
+                await TribeService().postJoinedActivity(
+                    tribeID: normalized,
+                    userName: displayName,
+                    userID: uid
+                )
+                return .joined
+            }
+            return .alreadyMember
+        } catch {
+            tribeSyncError = "Could not save your tribe. Check the connection and try again."
+            return .failed(tribeSyncError ?? "Could not save your tribe.")
+        }
+    }
+
     private func persistLocal() {
         let defaults = UserDefaults.standard
         defaults.set(displayName, forKey: Keys.name)
         defaults.set(tribe?.id, forKey: Keys.tribe)
+        defaults.set(tribeContributions, forKey: Keys.tribeContributions)
         defaults.set(xp, forKey: Keys.xp)
         defaults.set(level, forKey: Keys.level)
         defaults.set(streakDays, forKey: Keys.streak)
@@ -271,6 +325,9 @@ final class AppSession {
             }
             if let tribeId = data["tribeId"] as? String {
                 tribe = Tribe.byID(tribeId)
+            }
+            if let contributions = Self.intValue(data["tribeContributions"]) {
+                tribeContributions = max(0, contributions)
             }
             if let streak = Self.intValue(data["streak"]) {
                 streakDays = streak
@@ -300,7 +357,6 @@ final class AppSession {
             "xp": xp,
             "level": level,
             "rank": rank,
-            "tribeContributions": 0,
             "updatedAt": FieldValue.serverTimestamp()
         ]
         if let tribeID = tribe?.id {

@@ -12,7 +12,7 @@ Native SwiftUI iPhone app for Fueg0. The Flutter app at `../fueg0` remains the p
 - Version: 1.0 (1)
 - iOS 17+
 
-## Milestone 2
+## Milestone 3
 
 In this native port:
 
@@ -20,13 +20,13 @@ In this native port:
 - Session: signed-out → login; signed-in + not onboarded → onboarding; else home
 - Splash, onboarding, home
 - Ignite ritual: today’s WOD (daily rotation), lock the chain, local XP/streak
-- Tab shell for Tribe, Progress, Settings
+- Tribe tab: pick one of seven tribes, weekly leaderboard, membership feed
+- Tab shell for Progress and Settings
 
 Still Flutter-only:
 
 - Daily Fire YouTube (no API key in this repo)
 - Hell Fire canvas, streak calendar
-- Tribe war room, leaderboard, feed
 - 6 Daily Laws, body metrics, custom goals, achievements
 - Premium paywall / StoreKit, notifications, progress reset
 
