@@ -5,6 +5,7 @@ struct HomeView: View {
     var onOpenSettings: () -> Void = {}
 
     @State private var showIgnite = false
+    @State private var showCalendar = false
 
     private var tomorrow: String {
         let date = Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date()
@@ -31,7 +32,13 @@ struct HomeView: View {
                             .lineSpacing(4)
 
                         HStack(spacing: 8) {
-                            QuietPill(label: "\(session.streakDays)-day streak")
+                            Button {
+                                showCalendar = true
+                            } label: {
+                                QuietPill(label: "\(session.streakDays)-day streak")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityHint("Opens streak calendar")
                             QuietPill(label: "\(session.xp.formatted()) XP", accent: true)
                             QuietPill(label: session.rank, accent: true)
                         }
@@ -102,6 +109,19 @@ struct HomeView: View {
                     .presentationDragIndicator(.visible)
                     .presentationCornerRadius(28)
                     .preferredColorScheme(.dark)
+            }
+            .sheet(isPresented: $showCalendar) {
+                NavigationStack {
+                    StreakCalendarView()
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Close") { showCalendar = false }
+                            }
+                        }
+                }
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+                .preferredColorScheme(.dark)
             }
         }
     }

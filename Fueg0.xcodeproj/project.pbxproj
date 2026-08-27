@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0621C9BFB2C204C963BF1382 /* StreakCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF0546CE4554E916D2B9E34 /* StreakCalendarView.swift */; };
 		0784C44A392E0F13CF57CFE2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EE045EF92399ECB2A28F2D /* HomeView.swift */; };
 		11213065F7D3986A5E79B007 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5EDC3EBB49F170EC86D25B /* PaywallView.swift */; };
 		1137D65D775AF98B36918CD8 /* FirebaseBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBA8734F5B50F131FA6FEEF /* FirebaseBootstrap.swift */; };
@@ -62,6 +63,7 @@
 		792BB195007E278F92C38C03 /* SettingsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHubView.swift; sourceTree = "<group>"; };
 		7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsService.swift; sourceTree = "<group>"; };
 		8DA1DED8E4C80B5A2AFB69AF /* ProgressHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHubView.swift; sourceTree = "<group>"; };
+		8FF0546CE4554E916D2B9E34 /* StreakCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalendarView.swift; sourceTree = "<group>"; };
 		97188A81BC0D8FBC9CAFB763 /* Gamification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamification.swift; sourceTree = "<group>"; };
 		9828BCB98AD08C70BD8A9071 /* DailyGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGoal.swift; sourceTree = "<group>"; };
 		9CFDC937A2765C033E5245A4 /* EmberButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberButton.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				8DA1DED8E4C80B5A2AFB69AF /* ProgressHubView.swift */,
 				792BB195007E278F92C38C03 /* SettingsHubView.swift */,
 				E7B47903C19F0F70E362143C /* SplashView.swift */,
+				8FF0546CE4554E916D2B9E34 /* StreakCalendarView.swift */,
 				474162008F4A95DF19CCF932 /* TribeHubView.swift */,
 				04B82853A10E18085D245248 /* TribeSelectionView.swift */,
 			);
@@ -337,6 +340,7 @@
 				F45149F9EABDCDB466346C52 /* SettingsHubView.swift in Sources */,
 				C626D5095F9854AE87C7F331 /* SplashView.swift in Sources */,
 				D816B4F9A39D347D03C50355 /* StoreService.swift in Sources */,
+				0621C9BFB2C204C963BF1382 /* StreakCalendarView.swift in Sources */,
 				77986DE91AD0B701C95F754F /* Tribe.swift in Sources */,
 				D5DB6B2059B53D71A9E395FA /* TribeHubView.swift in Sources */,
 				7F1C7F94FEB608FF26FD60BA /* TribeRow.swift in Sources */,

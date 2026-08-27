@@ -31,6 +31,7 @@ final class AppSession {
         static let tribe = "fueg0.native.tribeID"
         static let ignited = "fueg0.native.ignitedDay"
         static let lastBurn = "fueg0.native.lastBurnDate"
+        static let burnedDays = "fueg0.native.burnedDays"
         static let completedMissions = "fueg0.native.completedMissions"
         static let xp = "fueg0.native.xp"
         static let level = "fueg0.native.level"
@@ -46,6 +47,7 @@ final class AppSession {
     var level: Int
     var rank: String
     var ignitedToday: Bool
+    var burnedDays: Set<String>
     var completedMissionIDs: Set<Int>
     var userUID: String?
     var userEmail: String?
@@ -62,7 +64,16 @@ final class AppSession {
         let defaults = UserDefaults.standard
         displayName = defaults.string(forKey: Keys.name) ?? "Warrior"
         tribe = Tribe.byID(defaults.string(forKey: Keys.tribe))
-        ignitedToday = defaults.string(forKey: Keys.ignited) == Self.dayStamp()
+        let todayIgnited = defaults.string(forKey: Keys.ignited) == Self.dayStamp()
+        var days = Set(defaults.stringArray(forKey: Keys.burnedDays) ?? [])
+        if days.isEmpty, let last = defaults.string(forKey: Keys.lastBurn), !last.isEmpty {
+            days.insert(last)
+        }
+        if todayIgnited {
+            days.insert(Self.dayStamp())
+        }
+        ignitedToday = todayIgnited
+        burnedDays = days
         let stored = defaults.array(forKey: Keys.completedMissions) as? [Int] ?? []
         completedMissionIDs = Set(stored)
         xp = defaults.integer(forKey: Keys.xp)
@@ -148,6 +159,7 @@ final class AppSession {
 
         streakDays = newStreak
         ignitedToday = true
+        burnedDays.insert(Self.dayStamp())
         let awarded = 150 + newStreak * 10
         applyXP(awarded)
         persistLocal()
@@ -250,7 +262,8 @@ final class AppSession {
         }
         [
             Keys.onboarded, Keys.name, Keys.tribe, Keys.ignited, Keys.lastBurn,
-            Keys.completedMissions, Keys.xp, Keys.level, Keys.streak, Keys.tribeContributions
+            Keys.burnedDays, Keys.completedMissions, Keys.xp, Keys.level, Keys.streak,
+            Keys.tribeContributions
         ].forEach { defaults.removeObject(forKey: $0) }
         FlutterPrefs.wipeAccountLocalData()
         displayName = "Warrior"
@@ -260,6 +273,7 @@ final class AppSession {
         level = 1
         rank = Gamification.rank(forLevel: 1)
         ignitedToday = false
+        burnedDays = []
         completedMissionIDs = []
         tribeContributions = 0
         tribeSyncError = nil
@@ -362,6 +376,7 @@ final class AppSession {
         defaults.set(xp, forKey: Keys.xp)
         defaults.set(level, forKey: Keys.level)
         defaults.set(streakDays, forKey: Keys.streak)
+        defaults.set(Array(burnedDays).sorted(), forKey: Keys.burnedDays)
         if ignitedToday {
             defaults.set(Self.dayStamp(), forKey: Keys.ignited)
             defaults.set(Self.dayStamp(), forKey: Keys.lastBurn)

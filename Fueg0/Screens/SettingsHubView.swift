@@ -101,6 +101,14 @@ struct SettingsHubView: View {
             }
 
             Section {
+                NavigationLink {
+                    StreakCalendarView()
+                } label: {
+                    Text("Streak calendar")
+                        .foregroundStyle(Palette.textPrimary)
+                }
+                .fueg0RowSurface()
+
                 Button("Replay onboarding") {
                     session.replayOnboarding()
                 }
