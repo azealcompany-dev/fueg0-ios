@@ -28,6 +28,7 @@
 		8C5E315E5F1E4D9BB5830CC4 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A48F92358BC707FB6032 /* OnboardingView.swift */; };
 		8E6509A77A0134E577D9BD47 /* TribeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B82853A10E18085D245248 /* TribeSelectionView.swift */; };
 		989FA2E0CC41529F1F982326 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15F2EAADD03CB33497AB89EC /* GoogleService-Info.plist */; };
+		9D0A386E9272BE0377AE2285 /* HellFireCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C455DC9E90F623F058FECC2 /* HellFireCanvas.swift */; };
 		A758F194D8D647DAD4A0FBFC /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F253855C0D01095E96E2ADAD /* Secrets.swift */; };
 		ABA330527A22C6797E242C60 /* YouTubePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1337C5E42461158A0ACE369C /* YouTubePlayerView.swift */; };
 		ABF4421EA1A443BC9C9625C1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F3AE00E7AA72B4534AF4E8 /* RootView.swift */; };
@@ -66,6 +67,7 @@
 		8FF0546CE4554E916D2B9E34 /* StreakCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalendarView.swift; sourceTree = "<group>"; };
 		97188A81BC0D8FBC9CAFB763 /* Gamification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamification.swift; sourceTree = "<group>"; };
 		9828BCB98AD08C70BD8A9071 /* DailyGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGoal.swift; sourceTree = "<group>"; };
+		9C455DC9E90F623F058FECC2 /* HellFireCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HellFireCanvas.swift; sourceTree = "<group>"; };
 		9CFDC937A2765C033E5245A4 /* EmberButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberButton.swift; sourceTree = "<group>"; };
 		A615A3CC1A2A21A294EFE53A /* TribeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeRow.swift; sourceTree = "<group>"; };
 		B2F3AE00E7AA72B4534AF4E8 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				9CFDC937A2765C033E5245A4 /* EmberButton.swift */,
+				9C455DC9E90F623F058FECC2 /* HellFireCanvas.swift */,
 				FF6E6E0E5B78416B961F54C0 /* PremiumGate.swift */,
 				A615A3CC1A2A21A294EFE53A /* TribeRow.swift */,
 				1337C5E42461158A0ACE369C /* YouTubePlayerView.swift */,
@@ -326,6 +329,7 @@
 				87DEA6F076662E2B6AD173ED /* Fueg0App.swift in Sources */,
 				B4055D02490048BB621A4400 /* Gamification.swift in Sources */,
 				52A6AC0633BDD148150AEE69 /* GoalsService.swift in Sources */,
+				9D0A386E9272BE0377AE2285 /* HellFireCanvas.swift in Sources */,
 				0784C44A392E0F13CF57CFE2 /* HomeView.swift in Sources */,
 				2AB2B733686A1325EED77E70 /* IgniteView.swift in Sources */,
 				323634A13CE57A0FAE4C06E0 /* LoginView.swift in Sources */,

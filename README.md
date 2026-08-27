@@ -19,7 +19,7 @@ In this native port:
 - Firebase Auth (email/password + Google Sign-In) and Firestore `users/{uid}`
 - Session: signed-out → login; signed-in + not onboarded → onboarding; else home
 - Splash, onboarding, home
-- Ignite ritual: Daily Fire YouTube, today’s WOD, lock the chain, local XP/streak
+- Ignite ritual: Hell Fire canvas → Daily Fire YouTube, today’s WOD, lock the chain, local XP/streak
 - Streak calendar + share (Home streak pill and Settings)
 - Tribe tab: pick one of seven tribes, weekly leaderboard, membership feed
 - Tab shell with the iOS 18 `Tab` API, system tab bar (Liquid Glass on iOS 26)
@@ -29,7 +29,6 @@ In this native port:
 
 Still Flutter-only:
 
-- Hell Fire canvas
 - Body metrics, custom goals editor, achievements
 - Notifications, progress reset
 

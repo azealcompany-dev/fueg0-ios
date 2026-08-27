@@ -5,7 +5,6 @@ struct IgniteView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var showingBurn = true
-    @State private var burnOpacity = 0.0
     @State private var result: IgniteResult?
     @State private var completing = false
     @State private var dailyVideo: DailyVideo?
@@ -33,19 +32,15 @@ struct IgniteView: View {
             }
         }
         .onAppear {
-            playBurn()
             Task { await loadFire() }
         }
     }
 
     private var burnStage: some View {
-        ZStack {
-            Palette.background.ignoresSafeArea()
-            Text("BURN")
-                .font(.system(size: 56, weight: .heavy))
-                .tracking(10)
-                .foregroundStyle(Palette.gold)
-                .opacity(burnOpacity)
+        HellFireCanvas {
+            withAnimation(.easeInOut(duration: 0.35)) {
+                showingBurn = false
+            }
         }
     }
 
@@ -158,19 +153,6 @@ struct IgniteView: View {
         dailyVideo = video
         fireLoading = false
         fireFailed = video.videoId.isEmpty
-    }
-
-    private func playBurn() {
-        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-        withAnimation(.easeOut(duration: 0.45)) {
-            burnOpacity = 1
-        }
-        Task {
-            try? await Task.sleep(for: .milliseconds(1_100))
-            withAnimation(.easeInOut(duration: 0.35)) {
-                showingBurn = false
-            }
-        }
     }
 
     private func complete() async {
