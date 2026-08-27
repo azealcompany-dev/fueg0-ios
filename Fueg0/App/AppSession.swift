@@ -155,7 +155,13 @@ final class AppSession {
         return IgniteResult(xpAwarded: awarded, newStreak: newStreak, alreadyComplete: false)
     }
 
+    func applyTribeContributionDelta(_ delta: Int) {
+        tribeContributions = max(0, tribeContributions + delta)
+        persistLocal()
+    }
+
     func toggleMission(_ id: Int) {
+
         if completedMissionIDs.contains(id) {
             completedMissionIDs.remove(id)
         } else {

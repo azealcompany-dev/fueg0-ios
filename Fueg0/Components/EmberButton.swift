@@ -57,17 +57,26 @@ struct Fueg0Field<Trailing: View>: View {
     let title: String
     @Binding var text: String
     var secure: Bool = false
+    var submitLabel: SubmitLabel = .next
+    var onSubmit: () -> Void = {}
+    var focus: FocusState<String?>.Binding? = nil
     @ViewBuilder var trailing: Trailing
 
     init(
         title: String,
         text: Binding<String>,
         secure: Bool = false,
+        submitLabel: SubmitLabel = .next,
+        onSubmit: @escaping () -> Void = {},
+        focus: FocusState<String?>.Binding? = nil,
         @ViewBuilder trailing: () -> Trailing
     ) {
         self.title = title
         self._text = text
         self.secure = secure
+        self.submitLabel = submitLabel
+        self.onSubmit = onSubmit
+        self.focus = focus
         self.trailing = trailing()
     }
 
@@ -87,6 +96,9 @@ struct Fueg0Field<Trailing: View>: View {
                 .font(.system(size: 17, weight: .regular))
                 .foregroundStyle(Palette.textPrimary)
                 .tint(Palette.ember)
+                .submitLabel(submitLabel)
+                .onSubmit(onSubmit)
+                .modifier(Fueg0FieldFocus(title: title, focus: focus))
                 trailing
             }
             .padding(.horizontal, Spacing.md)
@@ -103,9 +115,37 @@ struct Fueg0Field<Trailing: View>: View {
     }
 }
 
+private struct Fueg0FieldFocus: ViewModifier {
+    let title: String
+    var focus: FocusState<String?>.Binding?
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if let focus {
+            content.focused(focus, equals: title)
+        } else {
+            content
+        }
+    }
+}
+
 extension Fueg0Field where Trailing == EmptyView {
-    init(title: String, text: Binding<String>, secure: Bool = false) {
-        self.init(title: title, text: text, secure: secure) { EmptyView() }
+    init(
+        title: String,
+        text: Binding<String>,
+        secure: Bool = false,
+        submitLabel: SubmitLabel = .next,
+        onSubmit: @escaping () -> Void = {},
+        focus: FocusState<String?>.Binding? = nil
+    ) {
+        self.init(
+            title: title,
+            text: text,
+            secure: secure,
+            submitLabel: submitLabel,
+            onSubmit: onSubmit,
+            focus: focus
+        ) { EmptyView() }
     }
 }
 

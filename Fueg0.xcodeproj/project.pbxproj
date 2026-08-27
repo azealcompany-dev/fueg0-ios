@@ -13,7 +13,9 @@
 		323634A13CE57A0FAE4C06E0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1800AC9B22FFBB6B155F272B /* LoginView.swift */; };
 		3502832686405E10F4788B91 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6D667C26A2E4C9F2445FA178 /* PrivacyInfo.xcprivacy */; };
 		3F615FC25F0026D1A993F073 /* TribeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */; };
+		3F7EC6BFC036F07B344A4981 /* DailyGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9828BCB98AD08C70BD8A9071 /* DailyGoal.swift */; };
 		4C5DEBDA1DF5B6031F9AE8F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2BF146DBF047B34681F0EB09 /* Assets.xcassets */; };
+		52A6AC0633BDD148150AEE69 /* GoalsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */; };
 		572B9106533E9282FFC41D68 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5060C8AEC10A7383CB9423AD /* FirebaseFirestore */; };
 		77986DE91AD0B701C95F754F /* Tribe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F903862407A4F48F71819DEF /* Tribe.swift */; };
 		795AB3DE4EE6994EC689564A /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C364F711F77F01A07147EB /* Palette.swift */; };
@@ -50,8 +52,10 @@
 		572BF4EB5136354C2D4A62A5 /* Fueg0.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Fueg0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D667C26A2E4C9F2445FA178 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		792BB195007E278F92C38C03 /* SettingsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHubView.swift; sourceTree = "<group>"; };
+		7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsService.swift; sourceTree = "<group>"; };
 		8DA1DED8E4C80B5A2AFB69AF /* ProgressHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHubView.swift; sourceTree = "<group>"; };
 		97188A81BC0D8FBC9CAFB763 /* Gamification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamification.swift; sourceTree = "<group>"; };
+		9828BCB98AD08C70BD8A9071 /* DailyGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGoal.swift; sourceTree = "<group>"; };
 		9CFDC937A2765C033E5245A4 /* EmberButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberButton.swift; sourceTree = "<group>"; };
 		A615A3CC1A2A21A294EFE53A /* TribeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeRow.swift; sourceTree = "<group>"; };
 		B2F3AE00E7AA72B4534AF4E8 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 		93D6D24C3D990E9112D8256E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9828BCB98AD08C70BD8A9071 /* DailyGoal.swift */,
 				97188A81BC0D8FBC9CAFB763 /* Gamification.swift */,
 				F903862407A4F48F71819DEF /* Tribe.swift */,
 			);
@@ -164,6 +169,7 @@
 		C5478CDEECAD31BF1B7570B3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */,
 				CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */,
 			);
 			path = Services;
@@ -261,10 +267,12 @@
 			files = (
 				EF8E862AA8F714FDFE7871AC /* AppSession.swift in Sources */,
 				C1659C744EDBF7620A25A45E /* AuthGateway.swift in Sources */,
+				3F7EC6BFC036F07B344A4981 /* DailyGoal.swift in Sources */,
 				CBE08A0C0585AFF0D53A2C15 /* EmberButton.swift in Sources */,
 				1137D65D775AF98B36918CD8 /* FirebaseBootstrap.swift in Sources */,
 				87DEA6F076662E2B6AD173ED /* Fueg0App.swift in Sources */,
 				B4055D02490048BB621A4400 /* Gamification.swift in Sources */,
+				52A6AC0633BDD148150AEE69 /* GoalsService.swift in Sources */,
 				0784C44A392E0F13CF57CFE2 /* HomeView.swift in Sources */,
 				2AB2B733686A1325EED77E70 /* IgniteView.swift in Sources */,
 				323634A13CE57A0FAE4C06E0 /* LoginView.swift in Sources */,

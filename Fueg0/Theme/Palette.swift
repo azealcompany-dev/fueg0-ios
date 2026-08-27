@@ -49,3 +49,37 @@ extension View {
         padding(.horizontal, Spacing.screen)
     }
 }
+
+
+private struct Fueg0NavigationPrompt: ViewModifier {
+    let text: String
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content.navigationSubtitle(text)
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    func fueg0ListChrome() -> some View {
+        self
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .background(Palette.background.ignoresSafeArea())
+            .tint(Palette.ember)
+    }
+
+    func fueg0RowSurface(_ color: Color = Palette.surface) -> some View {
+        self
+            .listRowBackground(color)
+            .listRowSeparatorTint(Palette.hairline)
+    }
+
+    func fueg0NavigationPrompt(_ text: String) -> some View {
+        modifier(Fueg0NavigationPrompt(text: text))
+    }
+}

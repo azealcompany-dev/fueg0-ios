@@ -10,10 +10,12 @@ struct LoginView: View {
     @State private var obscure = true
     @State private var resetNotice: String?
     @State private var resetting = false
+    @FocusState private var focused: String?
 
     private static let emailRegex = /^[\w.\-]+@([\w\-]+\.)+[\w\-]{2,}$/
 
     var body: some View {
+        NavigationStack {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 Text("FUEG0")
@@ -36,18 +38,37 @@ struct LoginView: View {
 
                 VStack(spacing: Spacing.md) {
                     if !isLogin {
-                        Fueg0Field(title: "Name", text: $name)
-                            .textContentType(.name)
-                            .textInputAutocapitalization(.words)
+                        Fueg0Field(
+                            title: "Name",
+                            text: $name,
+                            submitLabel: .next,
+                            onSubmit: { focused = "Email" },
+                            focus: $focused
+                        )
+                        .textContentType(.name)
+                        .textInputAutocapitalization(.words)
                     }
 
-                    Fueg0Field(title: "Email", text: $email)
-                        .textContentType(.username)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
+                    Fueg0Field(
+                        title: "Email",
+                        text: $email,
+                        submitLabel: .next,
+                        onSubmit: { focused = "Password" },
+                        focus: $focused
+                    )
+                    .textContentType(isLogin ? .username : .emailAddress)
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
 
-                    Fueg0Field(title: "Password", text: $password, secure: obscure) {
+                    Fueg0Field(
+                        title: "Password",
+                        text: $password,
+                        secure: obscure,
+                        submitLabel: isLogin ? .go : .join,
+                        onSubmit: { Task { await submit() } },
+                        focus: $focused
+                    ) {
                         Button {
                             obscure.toggle()
                         } label: {
@@ -119,6 +140,16 @@ struct LoginView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .background(Palette.background.ignoresSafeArea())
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") { focused = nil }
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(Palette.ember)
+            }
+        }
+        } // NavigationStack
     }
 
     private var canSubmit: Bool {

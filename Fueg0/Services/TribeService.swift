@@ -99,6 +99,159 @@ struct TribeService {
         )
     }
 
+    static let pointsPerGoal = 15
+
+    @discardableResult
+    func awardPointsForGoal(
+        goalId: String,
+        goalTitle: String,
+        tribeID: String,
+        userName: String,
+        userID: String
+    ) async -> Int {
+        guard Tribe.byID(tribeID) != nil else { return 0 }
+        let today = Self.weekFormatter.string(from: Date())
+        let awardID = "\(today)_\(goalId)"
+        let awardRef = db.collection("users").document(userID).collection("tribeGoalAwards").document(awardID)
+        let tribeRef = db.collection("tribes").document(tribeID)
+        let userRef = db.collection("users").document(userID)
+        let week = Self.weekKey()
+        let localKey = FlutterPrefs.tribeGoalAward(date: today, goalId: goalId)
+
+        do {
+            let existing = try await awardRef.getDocument()
+            if existing.exists { return 0 }
+
+            _ = try await db.runTransaction { tx, errorPointer in
+                do {
+                    let snap = try tx.getDocument(tribeRef)
+                    let data = snap.data()
+                    var total = Self.intValue(data?["totalPoints"]) ?? 0
+                    var weekly = Self.intValue(data?["weeklyPoints"]) ?? 0
+                    if (data?["weekKey"] as? String ?? "") != week { weekly = 0 }
+                    total += Self.pointsPerGoal
+                    weekly += Self.pointsPerGoal
+                    tx.setData(
+                        [
+                            "totalPoints": total,
+                            "weeklyPoints": weekly,
+                            "weekKey": week,
+                            "updatedAt": FieldValue.serverTimestamp()
+                        ],
+                        forDocument: tribeRef,
+                        merge: true
+                    )
+                    tx.setData(
+                        ["tribeContributions": FieldValue.increment(Int64(Self.pointsPerGoal))],
+                        forDocument: userRef,
+                        merge: true
+                    )
+                    tx.setData(
+                        ["awardedAt": FieldValue.serverTimestamp()],
+                        forDocument: awardRef,
+                        merge: true
+                    )
+                    return nil
+                } catch {
+                    errorPointer?.pointee = error as NSError
+                    return nil
+                }
+            }
+            UserDefaults.standard.set(true, forKey: localKey)
+            await postGoalActivity(tribeID: tribeID, userName: userName, userID: userID, goalTitle: goalTitle)
+            return Self.pointsPerGoal
+        } catch {
+            if UserDefaults.standard.bool(forKey: localKey) { return 0 }
+            UserDefaults.standard.set(true, forKey: localKey)
+            return Self.pointsPerGoal
+        }
+    }
+
+    @discardableResult
+    func removePointsForGoal(
+        goalId: String,
+        tribeID: String,
+        userID: String
+    ) async -> Int {
+        guard Tribe.byID(tribeID) != nil else { return 0 }
+        let today = Self.weekFormatter.string(from: Date())
+        let awardID = "\(today)_\(goalId)"
+        let awardRef = db.collection("users").document(userID).collection("tribeGoalAwards").document(awardID)
+        let tribeRef = db.collection("tribes").document(tribeID)
+        let userRef = db.collection("users").document(userID)
+        let week = Self.weekKey()
+        let localKey = FlutterPrefs.tribeGoalAward(date: today, goalId: goalId)
+
+        do {
+            let existing = try await awardRef.getDocument()
+            if !existing.exists {
+                if UserDefaults.standard.bool(forKey: localKey) {
+                    UserDefaults.standard.set(false, forKey: localKey)
+                    return -Self.pointsPerGoal
+                }
+                return 0
+            }
+
+            _ = try await db.runTransaction { tx, errorPointer in
+                do {
+                    let snap = try tx.getDocument(tribeRef)
+                    let data = snap.data()
+                    var total = Self.intValue(data?["totalPoints"]) ?? 0
+                    var weekly = Self.intValue(data?["weeklyPoints"]) ?? 0
+                    if (data?["weekKey"] as? String ?? "") != week { weekly = 0 }
+                    total = max(0, total - Self.pointsPerGoal)
+                    weekly = max(0, weekly - Self.pointsPerGoal)
+                    tx.setData(
+                        [
+                            "totalPoints": total,
+                            "weeklyPoints": weekly,
+                            "weekKey": week,
+                            "updatedAt": FieldValue.serverTimestamp()
+                        ],
+                        forDocument: tribeRef,
+                        merge: true
+                    )
+                    tx.setData(
+                        ["tribeContributions": FieldValue.increment(Int64(-Self.pointsPerGoal))],
+                        forDocument: userRef,
+                        merge: true
+                    )
+                    tx.deleteDocument(awardRef)
+                    return nil
+                } catch {
+                    errorPointer?.pointee = error as NSError
+                    return nil
+                }
+            }
+            UserDefaults.standard.set(false, forKey: localKey)
+            return -Self.pointsPerGoal
+        } catch {
+            if UserDefaults.standard.bool(forKey: localKey) {
+                UserDefaults.standard.set(false, forKey: localKey)
+                return -Self.pointsPerGoal
+            }
+            return 0
+        }
+    }
+
+    func postGoalActivity(tribeID: String, userName: String, userID: String, goalTitle: String) async {
+        guard Tribe.byID(tribeID) != nil else { return }
+        let clippedName = String(userName.prefix(80))
+        let message = String("completed \(goalTitle) (+\(Self.pointsPerGoal) pts)".prefix(300))
+        let payload: [String: Any] = [
+            "userName": clippedName.isEmpty ? "Warrior" : clippedName,
+            "message": message,
+            "type": "goal_completed",
+            "timestamp": FieldValue.serverTimestamp(),
+            "userId": userID
+        ]
+        do {
+            try await db.collection("tribes").document(tribeID).collection("feed").addDocument(data: payload)
+        } catch {
+            // Feed is best-effort.
+        }
+    }
+
     func postJoinedActivity(tribeID: String, userName: String, userID: String) async {
         guard Tribe.byID(tribeID) != nil else { return }
         let clippedName = String(userName.prefix(80))

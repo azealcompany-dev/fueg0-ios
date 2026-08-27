@@ -2,6 +2,8 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(AppSession.self) private var session
+    var onOpenSettings: () -> Void = {}
+
     @State private var showIgnite = false
 
     private var tomorrow: String {
@@ -9,73 +11,47 @@ struct HomeView: View {
         return date.formatted(.dateTime.weekday(.wide).month(.wide).day())
     }
 
+    private var homeTitle: String {
+        let name = session.displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        if name.isEmpty || name == "Warrior" { return "Home" }
+        return name
+    }
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: Spacing.xl) {
-                    header
-                    quote
+            List {
+                Section {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Ready.")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundStyle(Palette.textMuted)
+                        Text("“\(SampleContent.quote())”")
+                            .font(.system(size: 20, weight: .regular).italic())
+                            .foregroundStyle(Palette.textPrimary)
+                            .lineSpacing(4)
+
+                        HStack(spacing: 8) {
+                            QuietPill(label: "\(session.streakDays)-day streak")
+                            QuietPill(label: "\(session.xp.formatted()) XP", accent: true)
+                            QuietPill(label: session.rank, accent: true)
+                        }
+                        .padding(.top, 4)
+                    }
+                    .padding(.vertical, 6)
+                }
+                .fueg0RowSurface()
+
+                Section {
                     EmberButton(title: session.ignitedToday ? "Reignite" : "Ignite") {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         showIgnite = true
                     }
-                    missions
+                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                 }
-                .fueg0ScreenPadding()
-                .padding(.top, Spacing.sm)
-                .padding(.bottom, Spacing.xxl)
-            }
-            .background(Palette.background.ignoresSafeArea())
-            .navigationBarHidden(true)
-            .fullScreenCover(isPresented: $showIgnite) {
-                IgniteView()
-            }
-        }
-    }
+                .fueg0RowSurface(Color.clear)
+                .listRowSeparator(.hidden)
 
-    private var header: some View {
-        VStack(alignment: .leading, spacing: Spacing.md) {
-            Text("Fueg0")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(Palette.textMuted)
-
-            Text("Ready, \(session.displayName).")
-                .font(.system(size: 28, weight: .bold))
-                .foregroundStyle(Palette.textPrimary)
-
-            HStack(spacing: 8) {
-                QuietPill(label: "\(session.streakDays)-day streak")
-                QuietPill(label: "\(session.xp.formatted()) XP", accent: true)
-                QuietPill(label: session.rank, accent: true)
-            }
-        }
-    }
-
-    private var quote: some View {
-        Text("“\(SampleContent.quote())”")
-            .font(.system(size: 17, weight: .regular).italic())
-            .foregroundStyle(Palette.textSecondary)
-            .lineSpacing(5)
-    }
-
-    private var missions: some View {
-        SurfaceCard {
-            VStack(alignment: .leading, spacing: Spacing.md) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text("Tomorrow’s missions")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundStyle(Palette.textPrimary)
-                    Spacer()
-                    Text("\(session.completedMissionIDs.count)/\(SampleContent.missions.count)")
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundStyle(Palette.textSecondary)
-                }
-
-                Text(tomorrow)
-                    .font(.system(size: 13))
-                    .foregroundStyle(Palette.textMuted)
-
-                VStack(spacing: 8) {
+                Section {
                     ForEach(SampleContent.missions) { mission in
                         MissionRow(
                             mission: mission,
@@ -84,8 +60,48 @@ struct HomeView: View {
                             UIImpactFeedbackGenerator(style: .light).impactOccurred()
                             session.toggleMission(mission.id)
                         }
+                        .fueg0RowSurface(session.completedMissionIDs.contains(mission.id) ? Palette.ember.opacity(0.08) : Palette.surface)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button {
+                                session.toggleMission(mission.id)
+                            } label: {
+                                Label(
+                                    session.completedMissionIDs.contains(mission.id) ? "Undo" : "Done",
+                                    systemImage: session.completedMissionIDs.contains(mission.id) ? "arrow.uturn.backward" : "checkmark"
+                                )
+                            }
+                            .tint(Palette.ember)
+                        }
                     }
+                } header: {
+                    HStack {
+                        Text("Tomorrow’s missions")
+                        Spacer()
+                        Text("\(session.completedMissionIDs.count)/\(SampleContent.missions.count)")
+                            .foregroundStyle(Palette.textMuted)
+                    }
+                } footer: {
+                    Text(tomorrow)
                 }
+            }
+            .fueg0ListChrome()
+            .navigationTitle(homeTitle)
+            .navigationBarTitleDisplayMode(.large)
+            .fueg0NavigationPrompt("Fueg0")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: onOpenSettings) {
+                        Image(systemName: "person.crop.circle")
+                    }
+                    .accessibilityLabel("Profile and settings")
+                }
+            }
+            .sheet(isPresented: $showIgnite) {
+                IgniteView()
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(28)
+                    .preferredColorScheme(.dark)
             }
         }
     }
@@ -100,13 +116,13 @@ private struct MissionRow: View {
         Button(action: onToggle) {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: done ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.system(size: 20, weight: .medium))
                     .foregroundStyle(done ? Palette.ember : Palette.textMuted)
                     .padding(.top, 1)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(mission.title)
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(Palette.textPrimary)
                     Text(mission.detail)
                         .font(.system(size: 13))
@@ -119,17 +135,9 @@ private struct MissionRow: View {
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(Palette.gold)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(done ? Palette.ember.opacity(0.06) : Color.clear)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(done ? Palette.emberBorder : Palette.hairline, lineWidth: 1)
-            )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(mission.title)
+        .accessibilityValue(done ? "Complete" : "Not complete")
     }
 }

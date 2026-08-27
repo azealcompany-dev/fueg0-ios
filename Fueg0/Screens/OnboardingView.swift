@@ -30,6 +30,7 @@ struct OnboardingView: View {
                 .padding(.bottom, Spacing.lg)
         }
         .background(Palette.background.ignoresSafeArea())
+        .scrollDismissesKeyboard(.interactively)
         .onAppear {
             guard !didPrefill else { return }
             didPrefill = true
@@ -107,8 +108,10 @@ struct OnboardingView: View {
             copy: "Claim the name you bring into the fire."
         ) {
             TextField("Your name", text: $name)
+                .textContentType(.name)
                 .textInputAutocapitalization(.words)
                 .autocorrectionDisabled()
+                .submitLabel(.done)
                 .font(.system(size: 18, weight: .regular))
                 .foregroundStyle(Palette.textPrimary)
                 .tint(Palette.ember)

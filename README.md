@@ -21,13 +21,14 @@ In this native port:
 - Splash, onboarding, home
 - Ignite ritual: today’s WOD (daily rotation), lock the chain, local XP/streak
 - Tribe tab: pick one of seven tribes, weekly leaderboard, membership feed
-- Tab shell for Progress and Settings
+- Tab shell with the iOS 18 `Tab` API, system tab bar (Liquid Glass on iOS 26)
+- Progress: native Daily Laws checklist (Flutter prefs + tribe awards)
 
 Still Flutter-only:
 
 - Daily Fire YouTube (no API key in this repo)
 - Hell Fire canvas, streak calendar
-- 6 Daily Laws, body metrics, custom goals, achievements
+- Body metrics, custom goals editor, achievements
 - Premium paywall / StoreKit, notifications, progress reset
 
 ## Generate & build
