@@ -52,4 +52,16 @@ enum FlutterPrefs {
     static func tribeGoalAward(date: String, goalId: String) -> String {
         "tribe_goal_awarded_\(date)_\(goalId)"
     }
+
+    static func wipeAccountLocalData() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: customDailyGoals)
+        defaults.removeObject(forKey: goalsMigrated)
+        defaults.removeObject(forKey: tribeUserContributions)
+        for key in defaults.dictionaryRepresentation().keys {
+            if key.hasPrefix("goal_completion_") || key.hasPrefix("tribe_goal_awarded_") {
+                defaults.removeObject(forKey: key)
+            }
+        }
+    }
 }

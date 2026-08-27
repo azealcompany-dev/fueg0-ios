@@ -24,6 +24,7 @@ In this native port:
 - Tab shell with the iOS 18 `Tab` API, system tab bar (Liquid Glass on iOS 26)
 - Progress: native Daily Laws checklist (Flutter prefs + tribe awards)
 - StoreKit 2 paywall for `fueg0_premium_monthly` (7-day intro offer from the store)
+- Account deletion in Settings (Firestore `users/{uid}` + Auth user, with password or Google reauth)
 
 Still Flutter-only:
 

@@ -222,6 +222,54 @@ final class AppSession {
         }
     }
 
+    func deleteAccount() async throws {
+        isBusy = true
+        authError = nil
+        defer { isBusy = false }
+        try await AuthGateway.deleteAccount()
+        wipeLocalSession()
+    }
+
+    func reauthenticateAndDelete(password: String?, google: Bool) async throws {
+        isBusy = true
+        authError = nil
+        defer { isBusy = false }
+        if google {
+            try await AuthGateway.reauthenticateWithGoogle()
+        } else {
+            try await AuthGateway.reauthenticateWithPassword(password ?? "")
+        }
+        try await AuthGateway.deleteAccount()
+        wipeLocalSession()
+    }
+
+    private func wipeLocalSession() {
+        let defaults = UserDefaults.standard
+        if let uid = userUID {
+            defaults.removeObject(forKey: Self.onboardedKey(uid))
+        }
+        [
+            Keys.onboarded, Keys.name, Keys.tribe, Keys.ignited, Keys.lastBurn,
+            Keys.completedMissions, Keys.xp, Keys.level, Keys.streak, Keys.tribeContributions
+        ].forEach { defaults.removeObject(forKey: $0) }
+        FlutterPrefs.wipeAccountLocalData()
+        displayName = "Warrior"
+        tribe = nil
+        streakDays = 0
+        xp = 0
+        level = 1
+        rank = Gamification.rank(forLevel: 1)
+        ignitedToday = false
+        completedMissionIDs = []
+        tribeContributions = 0
+        tribeSyncError = nil
+        cloudProfileExists = false
+        userUID = nil
+        userEmail = nil
+        authError = nil
+        phase = .login
+    }
+
     private func runAuth(_ work: () async throws -> Void) async {
         isBusy = true
         authError = nil

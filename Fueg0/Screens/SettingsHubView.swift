@@ -5,6 +5,11 @@ struct SettingsHubView: View {
     @Environment(StoreService.self) private var store
     @State private var showTribeSelection = false
     @State private var showPaywall = false
+    @State private var showDeleteConfirm = false
+    @State private var showPasswordConfirm = false
+    @State private var deletePassword = ""
+    @State private var isDeleting = false
+    @State private var deleteMessage: String?
 
     var body: some View {
         List {
@@ -33,13 +38,11 @@ struct SettingsHubView: View {
             }
 
             Section {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Signed in with email or Google. Warrior name lives on this iPhone and in Firestore users/{uid}.")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Palette.textMuted)
-                        .lineSpacing(3)
-                }
-                .fueg0RowSurface()
+                Text("Signed in with email or Google. Your warrior name stays on this iPhone and syncs when you’re online.")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Palette.textMuted)
+                    .lineSpacing(3)
+                    .fueg0RowSurface()
             } header: {
                 Text("Account")
             }
@@ -108,6 +111,23 @@ struct SettingsHubView: View {
                     session.signOut()
                 }
                 .fueg0RowSurface()
+
+                Button(isDeleting ? "Deleting Account…" : "Delete Account", role: .destructive) {
+                    showDeleteConfirm = true
+                }
+                .disabled(isDeleting || session.isBusy)
+                .fueg0RowSurface()
+            } footer: {
+                Text("Deleting your account does not cancel Fueg0 Premium. Manage the subscription in your Apple ID settings.")
+            }
+
+            if let deleteMessage {
+                Section {
+                    Text(deleteMessage)
+                        .font(.system(size: 14))
+                        .foregroundStyle(Palette.error)
+                        .fueg0RowSurface()
+                }
             }
 
             Section {
@@ -134,6 +154,29 @@ struct SettingsHubView: View {
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.large)
         .fueg0PaywallSheet($showPaywall)
+        .confirmationDialog(
+            "Delete Account?",
+            isPresented: $showDeleteConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Delete Account", role: .destructive) {
+                Task { await runDelete() }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This cannot be undone. Your profile, streak, XP, tribe membership, and cloud data will be permanently deleted. This does not cancel Fueg0 Premium.")
+        }
+        .alert("Confirm it’s you", isPresented: $showPasswordConfirm) {
+            SecureField("Password", text: $deletePassword)
+            Button("Delete Account", role: .destructive) {
+                Task { await runDelete(afterPassword: deletePassword) }
+            }
+            Button("Cancel", role: .cancel) {
+                deletePassword = ""
+            }
+        } message: {
+            Text("Enter your password to permanently delete this account.")
+        }
         .sheet(isPresented: $showTribeSelection) {
             NavigationStack {
                 TribeSelectionView()
@@ -145,6 +188,36 @@ struct SettingsHubView: View {
             }
             .presentationDetents([.large])
             .preferredColorScheme(.dark)
+        }
+    }
+
+    private func runDelete(afterPassword password: String? = nil, google: Bool = false) async {
+        isDeleting = true
+        deleteMessage = nil
+        defer { isDeleting = false }
+        do {
+            if google || password != nil {
+                try await session.reauthenticateAndDelete(password: password, google: google)
+            } else {
+                try await session.deleteAccount()
+            }
+            deletePassword = ""
+        } catch let failure as AuthFailure {
+            switch failure {
+            case .requiresRecentLogin(let isGoogle):
+                if google {
+                    deleteMessage = "Confirm it’s you, then try Delete Account again."
+                } else if isGoogle {
+                    await runDelete(google: true)
+                } else {
+                    deletePassword = ""
+                    showPasswordConfirm = true
+                }
+            case .message(let text):
+                deleteMessage = text
+            }
+        } catch {
+            deleteMessage = error.localizedDescription
         }
     }
 }
