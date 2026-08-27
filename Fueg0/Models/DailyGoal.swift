@@ -59,7 +59,9 @@ enum FlutterPrefs {
         defaults.removeObject(forKey: goalsMigrated)
         defaults.removeObject(forKey: tribeUserContributions)
         for key in defaults.dictionaryRepresentation().keys {
-            if key.hasPrefix("goal_completion_") || key.hasPrefix("tribe_goal_awarded_") {
+            if key.hasPrefix("goal_completion_")
+                || key.hasPrefix("tribe_goal_awarded_")
+                || key.hasPrefix("daily_video_") {
                 defaults.removeObject(forKey: key)
             }
         }

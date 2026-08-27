@@ -8,9 +8,17 @@ struct IgniteView: View {
     @State private var burnOpacity = 0.0
     @State private var result: IgniteResult?
     @State private var completing = false
+    @State private var dailyVideo: DailyVideo?
+    @State private var fireLoading = true
+    @State private var fireFailed = false
 
     private var wod: (title: String, detail: String) {
         SampleContent.todaysWOD()
+    }
+
+    private var fireQuote: String {
+        if let quote = dailyVideo?.quote, !quote.isEmpty { return quote }
+        return SampleContent.quote()
     }
 
     var body: some View {
@@ -24,7 +32,10 @@ struct IgniteView: View {
                     .transition(.opacity)
             }
         }
-        .onAppear { playBurn() }
+        .onAppear {
+            playBurn()
+            Task { await loadFire() }
+        }
     }
 
     private var burnStage: some View {
@@ -42,11 +53,18 @@ struct IgniteView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.lg) {
+                    DailyFirePlayer(
+                        video: dailyVideo,
+                        failed: fireFailed,
+                        loading: fireLoading,
+                        onRetry: { Task { await loadFire(force: true) } }
+                    )
+
                     Text("Today’s fire")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(Palette.ember)
 
-                    Text("“\(SampleContent.quote())”")
+                    Text("“\(fireQuote)”")
                         .font(.system(size: 22, weight: .regular).italic())
                         .foregroundStyle(Palette.textPrimary)
                         .lineSpacing(4)
@@ -131,6 +149,15 @@ struct IgniteView: View {
         if session.ignitedToday { return "CHAIN SECURE" }
         if session.streakDays == 0 { return "START THE CHAIN" }
         return "LOCK STREAK"
+    }
+
+    private func loadFire(force: Bool = false) async {
+        fireLoading = dailyVideo == nil
+        fireFailed = false
+        let video = await DailyFireService.video(forToday: force)
+        dailyVideo = video
+        fireLoading = false
+        fireFailed = video.videoId.isEmpty
     }
 
     private func playBurn() {

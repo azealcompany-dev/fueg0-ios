@@ -27,6 +27,17 @@ targets:
       - path: Fueg0
         excludes:
           - "**/.DS_Store"
+          - "Config/Secrets.plist"
+    preBuildScripts:
+      - name: Copy Secrets plist
+        basedOnDependencyAnalysis: false
+        script: |
+          DEST="${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+          mkdir -p "$DEST"
+          SRC="${SRCROOT}/Fueg0/Config/Secrets.plist"
+          if [ -f "$SRC" ]; then
+            cp "$SRC" "$DEST/Secrets.plist"
+          fi
     dependencies:
       - package: firebase-ios-sdk
         product: FirebaseCore

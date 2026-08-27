@@ -16,6 +16,7 @@
 		3F615FC25F0026D1A993F073 /* TribeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */; };
 		3F7EC6BFC036F07B344A4981 /* DailyGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9828BCB98AD08C70BD8A9071 /* DailyGoal.swift */; };
 		4C5DEBDA1DF5B6031F9AE8F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2BF146DBF047B34681F0EB09 /* Assets.xcassets */; };
+		501BB52392FF7BD2B0B91F1A /* DailyFireService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47637BC8E43EEF62E3DA1016 /* DailyFireService.swift */; };
 		52A6AC0633BDD148150AEE69 /* GoalsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */; };
 		572B9106533E9282FFC41D68 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5060C8AEC10A7383CB9423AD /* FirebaseFirestore */; };
 		587C2F7B070A34A572644909 /* PremiumGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6E6E0E5B78416B961F54C0 /* PremiumGate.swift */; };
@@ -26,6 +27,8 @@
 		8C5E315E5F1E4D9BB5830CC4 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A48F92358BC707FB6032 /* OnboardingView.swift */; };
 		8E6509A77A0134E577D9BD47 /* TribeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B82853A10E18085D245248 /* TribeSelectionView.swift */; };
 		989FA2E0CC41529F1F982326 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15F2EAADD03CB33497AB89EC /* GoogleService-Info.plist */; };
+		A758F194D8D647DAD4A0FBFC /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F253855C0D01095E96E2ADAD /* Secrets.swift */; };
+		ABA330527A22C6797E242C60 /* YouTubePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1337C5E42461158A0ACE369C /* YouTubePlayerView.swift */; };
 		ABF4421EA1A443BC9C9625C1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F3AE00E7AA72B4534AF4E8 /* RootView.swift */; };
 		ADB93ABDB038C66A1695287D /* ProgressHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA1DED8E4C80B5A2AFB69AF /* ProgressHubView.swift */; };
 		B4055D02490048BB621A4400 /* Gamification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97188A81BC0D8FBC9CAFB763 /* Gamification.swift */; };
@@ -44,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		04B82853A10E18085D245248 /* TribeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeSelectionView.swift; sourceTree = "<group>"; };
+		1337C5E42461158A0ACE369C /* YouTubePlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubePlayerView.swift; sourceTree = "<group>"; };
 		15F2EAADD03CB33497AB89EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1800AC9B22FFBB6B155F272B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		28DF3B9DAB70586EC39F2EB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -52,6 +56,7 @@
 		3A59A32FCE355F85368E5169 /* IgniteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgniteView.swift; sourceTree = "<group>"; };
 		40C364F711F77F01A07147EB /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		474162008F4A95DF19CCF932 /* TribeHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeHubView.swift; sourceTree = "<group>"; };
+		47637BC8E43EEF62E3DA1016 /* DailyFireService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyFireService.swift; sourceTree = "<group>"; };
 		572BF4EB5136354C2D4A62A5 /* Fueg0.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Fueg0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D667C26A2E4C9F2445FA178 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		792BB195007E278F92C38C03 /* SettingsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHubView.swift; sourceTree = "<group>"; };
@@ -69,6 +74,7 @@
 		EDADE347193F21F74558CAB0 /* AppSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
 		EEBA8734F5B50F131FA6FEEF /* FirebaseBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBootstrap.swift; sourceTree = "<group>"; };
 		F12729267384D05F7B407FDE /* AuthGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGateway.swift; sourceTree = "<group>"; };
+		F253855C0D01095E96E2ADAD /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		F903862407A4F48F71819DEF /* Tribe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tribe.swift; sourceTree = "<group>"; };
 		FA5EDC3EBB49F170EC86D25B /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		FB1FD680F84C1DC08D6ED4C3 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
@@ -104,6 +110,7 @@
 			children = (
 				A1401C4B35A5EE879C062877 /* App */,
 				C4817AFF5BBAFB92F61B0222 /* Components */,
+				587DEDE4B73671FD420828B4 /* Config */,
 				93D6D24C3D990E9112D8256E /* Models */,
 				5A434E54FCB534E05CC7A18F /* Screens */,
 				C5478CDEECAD31BF1B7570B3 /* Services */,
@@ -114,6 +121,14 @@
 				6D667C26A2E4C9F2445FA178 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Fueg0;
+			sourceTree = "<group>";
+		};
+		587DEDE4B73671FD420828B4 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				F253855C0D01095E96E2ADAD /* Secrets.swift */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		5A434E54FCB534E05CC7A18F /* Screens */ = {
@@ -170,6 +185,7 @@
 				9CFDC937A2765C033E5245A4 /* EmberButton.swift */,
 				FF6E6E0E5B78416B961F54C0 /* PremiumGate.swift */,
 				A615A3CC1A2A21A294EFE53A /* TribeRow.swift */,
+				1337C5E42461158A0ACE369C /* YouTubePlayerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -177,6 +193,7 @@
 		C5478CDEECAD31BF1B7570B3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				47637BC8E43EEF62E3DA1016 /* DailyFireService.swift */,
 				7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */,
 				FB1FD680F84C1DC08D6ED4C3 /* StoreService.swift */,
 				CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */,
@@ -199,6 +216,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 63EC4B9FCAF7DE0B7DEBD2C1 /* Build configuration list for PBXNativeTarget "Fueg0" */;
 			buildPhases = (
+				A33AED5F4F30F9F226F58173 /* Copy Secrets plist */,
 				A58F17A3EB1472D3F67DFE1C /* Sources */,
 				510E05C5E548132901BB05F4 /* Resources */,
 				84C6821094071AF8B0AF2580 /* Frameworks */,
@@ -269,6 +287,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A33AED5F4F30F9F226F58173 /* Copy Secrets plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Secrets plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "DEST=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nmkdir -p \"$DEST\"\nSRC=\"${SRCROOT}/Fueg0/Config/Secrets.plist\"\nif [ -f \"$SRC\" ]; then\n  cp \"$SRC\" \"$DEST/Secrets.plist\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A58F17A3EB1472D3F67DFE1C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -276,6 +316,7 @@
 			files = (
 				EF8E862AA8F714FDFE7871AC /* AppSession.swift in Sources */,
 				C1659C744EDBF7620A25A45E /* AuthGateway.swift in Sources */,
+				501BB52392FF7BD2B0B91F1A /* DailyFireService.swift in Sources */,
 				3F7EC6BFC036F07B344A4981 /* DailyGoal.swift in Sources */,
 				CBE08A0C0585AFF0D53A2C15 /* EmberButton.swift in Sources */,
 				1137D65D775AF98B36918CD8 /* FirebaseBootstrap.swift in Sources */,
@@ -292,6 +333,7 @@
 				587C2F7B070A34A572644909 /* PremiumGate.swift in Sources */,
 				ADB93ABDB038C66A1695287D /* ProgressHubView.swift in Sources */,
 				ABF4421EA1A443BC9C9625C1 /* RootView.swift in Sources */,
+				A758F194D8D647DAD4A0FBFC /* Secrets.swift in Sources */,
 				F45149F9EABDCDB466346C52 /* SettingsHubView.swift in Sources */,
 				C626D5095F9854AE87C7F331 /* SplashView.swift in Sources */,
 				D816B4F9A39D347D03C50355 /* StoreService.swift in Sources */,
@@ -300,6 +342,7 @@
 				7F1C7F94FEB608FF26FD60BA /* TribeRow.swift in Sources */,
 				8E6509A77A0134E577D9BD47 /* TribeSelectionView.swift in Sources */,
 				3F615FC25F0026D1A993F073 /* TribeService.swift in Sources */,
+				ABA330527A22C6797E242C60 /* YouTubePlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

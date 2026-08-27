@@ -21,6 +21,9 @@ playground.xcworkspace
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
 
+# Local YouTube API key
+Fueg0/Config/Secrets.plist
+
 # Accidental local
 *.pbxuser
 !default.pbxuser
