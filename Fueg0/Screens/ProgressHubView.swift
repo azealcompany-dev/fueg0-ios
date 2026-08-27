@@ -5,6 +5,8 @@ struct ProgressHubView: View {
     @Environment(StoreService.self) private var store
     @State private var model = DailyLawsModel()
     @State private var showPaywall = false
+    @State private var showMetrics = false
+    @State private var report: WarriorProgressReport?
 
     var body: some View {
         Group {
@@ -29,12 +31,44 @@ struct ProgressHubView: View {
         .navigationTitle("Progress")
         .navigationBarTitleDisplayMode(.large)
         .fueg0NavigationPrompt("Daily Laws")
-        .task { await model.load(ignitedToday: session.ignitedToday) }
+        .task {
+            await model.load(ignitedToday: session.ignitedToday)
+            report = ProgressService.buildReport()
+        }
         .onChange(of: session.ignitedToday) { _, ignited in
             model.syncIgniteLaws(ignitedToday: ignited)
         }
+        .onAppear {
+            Task {
+                await model.load(ignitedToday: session.ignitedToday)
+                report = ProgressService.buildReport()
+            }
+        }
         .fueg0PaywallSheet($showPaywall)
+        .sheet(isPresented: $showMetrics) {
+            NavigationStack {
+                BodyMetricsFormView {
+                    report = ProgressService.buildReport()
+                }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Close") { showMetrics = false }
+                    }
+                }
+            }
+            .preferredColorScheme(.dark)
+        }
         .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                if store.isPremium {
+                    Button {
+                        showMetrics = true
+                    } label: {
+                        Image(systemName: "figure.run")
+                    }
+                    .accessibilityLabel("Warrior stats")
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 if !model.checkable.isEmpty {
                     Text("\(model.completedCount)/\(model.checkable.count)")
@@ -80,6 +114,16 @@ struct ProgressHubView: View {
                     .fueg0RowSurface()
             } header: {
                 Text("Predictive Progress")
+            }
+
+            Section {
+                NavigationLink {
+                    CustomGoalsView()
+                } label: {
+                    Text("Edit daily laws")
+                        .foregroundStyle(Palette.textPrimary)
+                }
+                .fueg0RowSurface()
             }
 
             Section {
@@ -156,7 +200,9 @@ struct ProgressHubView: View {
             }
             .padding(.vertical, 8)
         } else if store.isPremium {
-            PredictiveProgressExtras(overview: model.overview)
+            PredictiveProgressExtras(overview: model.overview, report: report) {
+                showMetrics = true
+            }
         } else {
             PremiumGateCard(featureName: "Predictive Progress") {
                 showPaywall = true

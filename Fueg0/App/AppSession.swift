@@ -163,6 +163,7 @@ final class AppSession {
         let awarded = 150 + newStreak * 10
         applyXP(awarded)
         persistLocal()
+        AchievementService.checkAndUnlock(session: self)
         Task { await persistCloud() }
         return IgniteResult(xpAwarded: awarded, newStreak: newStreak, alreadyComplete: false)
     }
@@ -224,6 +225,28 @@ final class AppSession {
             authError = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
             return nil
         }
+    }
+
+    func resetProgress() {
+        let defaults = UserDefaults.standard
+        [
+            Keys.ignited, Keys.lastBurn, Keys.burnedDays, Keys.completedMissions,
+            Keys.xp, Keys.level, Keys.streak, Keys.tribeContributions
+        ].forEach { defaults.removeObject(forKey: $0) }
+        FlutterPrefs.wipeAccountLocalData()
+        GoalsService().resetToDefaults()
+        NotificationService.cancelAll()
+        UserDefaults.standard.set(false, forKey: FlutterPrefs.notificationsEnabled)
+        streakDays = 0
+        xp = 0
+        level = 1
+        rank = Gamification.rank(forLevel: 1)
+        ignitedToday = false
+        burnedDays = []
+        completedMissionIDs = []
+        tribeContributions = 0
+        persistLocal()
+        AchievementService.checkAndUnlock(session: self)
     }
 
     func signOut() {
@@ -353,6 +376,7 @@ final class AppSession {
         do {
             try await TribeService().writeMembership(uid: uid, tribeID: normalized)
             tribeSyncError = nil
+            AchievementService.checkAndUnlock(session: self)
             if previousID != normalized {
                 await TribeService().postJoinedActivity(
                     tribeID: normalized,

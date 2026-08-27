@@ -11,6 +11,7 @@
 		0784C44A392E0F13CF57CFE2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EE045EF92399ECB2A28F2D /* HomeView.swift */; };
 		11213065F7D3986A5E79B007 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5EDC3EBB49F170EC86D25B /* PaywallView.swift */; };
 		1137D65D775AF98B36918CD8 /* FirebaseBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBA8734F5B50F131FA6FEEF /* FirebaseBootstrap.swift */; };
+		24E745B3EBC80AB77B8DA023 /* BodyMetricsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B0026B26935DBD87E71A12 /* BodyMetricsFormView.swift */; };
 		2AB2B733686A1325EED77E70 /* IgniteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59A32FCE355F85368E5169 /* IgniteView.swift */; };
 		323634A13CE57A0FAE4C06E0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1800AC9B22FFBB6B155F272B /* LoginView.swift */; };
 		3502832686405E10F4788B91 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6D667C26A2E4C9F2445FA178 /* PrivacyInfo.xcprivacy */; };
@@ -19,6 +20,7 @@
 		4C5DEBDA1DF5B6031F9AE8F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2BF146DBF047B34681F0EB09 /* Assets.xcassets */; };
 		501BB52392FF7BD2B0B91F1A /* DailyFireService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47637BC8E43EEF62E3DA1016 /* DailyFireService.swift */; };
 		52A6AC0633BDD148150AEE69 /* GoalsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */; };
+		5464384223AE5C7166EC9CC8 /* ProgressService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0904CB126C359622C606E6F /* ProgressService.swift */; };
 		572B9106533E9282FFC41D68 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5060C8AEC10A7383CB9423AD /* FirebaseFirestore */; };
 		587C2F7B070A34A572644909 /* PremiumGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6E6E0E5B78416B961F54C0 /* PremiumGate.swift */; };
 		77986DE91AD0B701C95F754F /* Tribe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F903862407A4F48F71819DEF /* Tribe.swift */; };
@@ -27,6 +29,7 @@
 		87DEA6F076662E2B6AD173ED /* Fueg0App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30066E09E4A91A0FAC9DDD82 /* Fueg0App.swift */; };
 		8C5E315E5F1E4D9BB5830CC4 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408A48F92358BC707FB6032 /* OnboardingView.swift */; };
 		8E6509A77A0134E577D9BD47 /* TribeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B82853A10E18085D245248 /* TribeSelectionView.swift */; };
+		9843BF28CE545BA063508C88 /* AchievementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605000FB41AFA01F6A59DBC6 /* AchievementService.swift */; };
 		989FA2E0CC41529F1F982326 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15F2EAADD03CB33497AB89EC /* GoogleService-Info.plist */; };
 		9D0A386E9272BE0377AE2285 /* HellFireCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C455DC9E90F623F058FECC2 /* HellFireCanvas.swift */; };
 		A758F194D8D647DAD4A0FBFC /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F253855C0D01095E96E2ADAD /* Secrets.swift */; };
@@ -36,14 +39,18 @@
 		B4055D02490048BB621A4400 /* Gamification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97188A81BC0D8FBC9CAFB763 /* Gamification.swift */; };
 		C1659C744EDBF7620A25A45E /* AuthGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12729267384D05F7B407FDE /* AuthGateway.swift */; };
 		C27328D147C0DE8272AC4F06 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C21052C94BA262A250BD0D87 /* FirebaseAuth */; };
+		C518565CBF4FB355C06C5685 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D52852C5654700E9CD3C93 /* NotificationService.swift */; };
 		C626D5095F9854AE87C7F331 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B47903C19F0F70E362143C /* SplashView.swift */; };
 		CAD6A4673E4B5DA04FA2C53F /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 46C3FA60070F6CE858242382 /* GoogleSignIn */; };
 		CBE08A0C0585AFF0D53A2C15 /* EmberButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFDC937A2765C033E5245A4 /* EmberButton.swift */; };
 		D5DB6B2059B53D71A9E395FA /* TribeHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474162008F4A95DF19CCF932 /* TribeHubView.swift */; };
 		D816B4F9A39D347D03C50355 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1FD680F84C1DC08D6ED4C3 /* StoreService.swift */; };
+		DB84251B74D231B747A8444B /* BodyMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEA495F5303C55FD9F4449D /* BodyMetrics.swift */; };
+		DFA4A46B371B154F3B814084 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F176AC0C0BB29C7796D6C76 /* AchievementsView.swift */; };
 		DFF1578948D4699B178AF9AD /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 55356B00B06EB20DDD0C3D1B /* FirebaseCore */; };
 		EB9E138BE95B4AEDC8EE4A6F /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9AE187B91B588CA5541132 /* MainTabView.swift */; };
 		EF8E862AA8F714FDFE7871AC /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADE347193F21F74558CAB0 /* AppSession.swift */; };
+		F29DEC93F6F8D8684BE7D6D6 /* CustomGoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438C467110DFBD3260D0A66E /* CustomGoalsView.swift */; };
 		F45149F9EABDCDB466346C52 /* SettingsHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792BB195007E278F92C38C03 /* SettingsHubView.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,9 +64,13 @@
 		30066E09E4A91A0FAC9DDD82 /* Fueg0App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fueg0App.swift; sourceTree = "<group>"; };
 		3A59A32FCE355F85368E5169 /* IgniteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgniteView.swift; sourceTree = "<group>"; };
 		40C364F711F77F01A07147EB /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
+		438C467110DFBD3260D0A66E /* CustomGoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGoalsView.swift; sourceTree = "<group>"; };
 		474162008F4A95DF19CCF932 /* TribeHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeHubView.swift; sourceTree = "<group>"; };
 		47637BC8E43EEF62E3DA1016 /* DailyFireService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyFireService.swift; sourceTree = "<group>"; };
 		572BF4EB5136354C2D4A62A5 /* Fueg0.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Fueg0.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F176AC0C0BB29C7796D6C76 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
+		5FEA495F5303C55FD9F4449D /* BodyMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyMetrics.swift; sourceTree = "<group>"; };
+		605000FB41AFA01F6A59DBC6 /* AchievementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementService.swift; sourceTree = "<group>"; };
 		6D667C26A2E4C9F2445FA178 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		792BB195007E278F92C38C03 /* SettingsHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHubView.swift; sourceTree = "<group>"; };
 		7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsService.swift; sourceTree = "<group>"; };
@@ -67,12 +78,15 @@
 		8FF0546CE4554E916D2B9E34 /* StreakCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalendarView.swift; sourceTree = "<group>"; };
 		97188A81BC0D8FBC9CAFB763 /* Gamification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gamification.swift; sourceTree = "<group>"; };
 		9828BCB98AD08C70BD8A9071 /* DailyGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGoal.swift; sourceTree = "<group>"; };
+		99D52852C5654700E9CD3C93 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		9C455DC9E90F623F058FECC2 /* HellFireCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HellFireCanvas.swift; sourceTree = "<group>"; };
 		9CFDC937A2765C033E5245A4 /* EmberButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberButton.swift; sourceTree = "<group>"; };
 		A615A3CC1A2A21A294EFE53A /* TribeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeRow.swift; sourceTree = "<group>"; };
 		B2F3AE00E7AA72B4534AF4E8 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B9EE045EF92399ECB2A28F2D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TribeService.swift; sourceTree = "<group>"; };
+		D0904CB126C359622C606E6F /* ProgressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressService.swift; sourceTree = "<group>"; };
+		D2B0026B26935DBD87E71A12 /* BodyMetricsFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyMetricsFormView.swift; sourceTree = "<group>"; };
 		D408A48F92358BC707FB6032 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		E7B47903C19F0F70E362143C /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		EDADE347193F21F74558CAB0 /* AppSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
@@ -138,6 +152,9 @@
 		5A434E54FCB534E05CC7A18F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				5F176AC0C0BB29C7796D6C76 /* AchievementsView.swift */,
+				D2B0026B26935DBD87E71A12 /* BodyMetricsFormView.swift */,
+				438C467110DFBD3260D0A66E /* CustomGoalsView.swift */,
 				B9EE045EF92399ECB2A28F2D /* HomeView.swift */,
 				3A59A32FCE355F85368E5169 /* IgniteView.swift */,
 				1800AC9B22FFBB6B155F272B /* LoginView.swift */,
@@ -157,6 +174,7 @@
 		93D6D24C3D990E9112D8256E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				5FEA495F5303C55FD9F4449D /* BodyMetrics.swift */,
 				9828BCB98AD08C70BD8A9071 /* DailyGoal.swift */,
 				97188A81BC0D8FBC9CAFB763 /* Gamification.swift */,
 				F903862407A4F48F71819DEF /* Tribe.swift */,
@@ -199,8 +217,11 @@
 		C5478CDEECAD31BF1B7570B3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				605000FB41AFA01F6A59DBC6 /* AchievementService.swift */,
 				47637BC8E43EEF62E3DA1016 /* DailyFireService.swift */,
 				7C7D2F24B21C2BCDD098F3D6 /* GoalsService.swift */,
+				99D52852C5654700E9CD3C93 /* NotificationService.swift */,
+				D0904CB126C359622C606E6F /* ProgressService.swift */,
 				FB1FD680F84C1DC08D6ED4C3 /* StoreService.swift */,
 				CEF89FA54C0BE46EE2C5F512 /* TribeService.swift */,
 			);
@@ -320,8 +341,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9843BF28CE545BA063508C88 /* AchievementService.swift in Sources */,
+				DFA4A46B371B154F3B814084 /* AchievementsView.swift in Sources */,
 				EF8E862AA8F714FDFE7871AC /* AppSession.swift in Sources */,
 				C1659C744EDBF7620A25A45E /* AuthGateway.swift in Sources */,
+				DB84251B74D231B747A8444B /* BodyMetrics.swift in Sources */,
+				24E745B3EBC80AB77B8DA023 /* BodyMetricsFormView.swift in Sources */,
+				F29DEC93F6F8D8684BE7D6D6 /* CustomGoalsView.swift in Sources */,
 				501BB52392FF7BD2B0B91F1A /* DailyFireService.swift in Sources */,
 				3F7EC6BFC036F07B344A4981 /* DailyGoal.swift in Sources */,
 				CBE08A0C0585AFF0D53A2C15 /* EmberButton.swift in Sources */,
@@ -334,11 +360,13 @@
 				2AB2B733686A1325EED77E70 /* IgniteView.swift in Sources */,
 				323634A13CE57A0FAE4C06E0 /* LoginView.swift in Sources */,
 				EB9E138BE95B4AEDC8EE4A6F /* MainTabView.swift in Sources */,
+				C518565CBF4FB355C06C5685 /* NotificationService.swift in Sources */,
 				8C5E315E5F1E4D9BB5830CC4 /* OnboardingView.swift in Sources */,
 				795AB3DE4EE6994EC689564A /* Palette.swift in Sources */,
 				11213065F7D3986A5E79B007 /* PaywallView.swift in Sources */,
 				587C2F7B070A34A572644909 /* PremiumGate.swift in Sources */,
 				ADB93ABDB038C66A1695287D /* ProgressHubView.swift in Sources */,
+				5464384223AE5C7166EC9CC8 /* ProgressService.swift in Sources */,
 				ABF4421EA1A443BC9C9625C1 /* RootView.swift in Sources */,
 				A758F194D8D647DAD4A0FBFC /* Secrets.swift in Sources */,
 				F45149F9EABDCDB466346C52 /* SettingsHubView.swift in Sources */,

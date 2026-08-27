@@ -30,17 +30,14 @@ struct PremiumGateCard: View {
 
 struct PredictiveProgressExtras: View {
     let overview: ProgressOverview?
+    var report: WarriorProgressReport?
+    var onEditStats: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             Text("PREDICTIVE PROGRESS")
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(Palette.ember)
-
-            Text("Consistency and tips from your Daily Laws. Body-metric timelines stay in the Flutter app until this port grows them.")
-                .font(.system(size: 14))
-                .foregroundStyle(Palette.textSecondary)
-                .lineSpacing(3)
 
             if let overview {
                 HStack(spacing: 8) {
@@ -54,18 +51,44 @@ struct PredictiveProgressExtras: View {
                 }
             }
 
-            VStack(alignment: .leading, spacing: 8) {
+            if let report {
+                Text(report.prediction.headlineMessage)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(Palette.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+                HStack(spacing: 8) {
+                    extraTile("TDEE", "\(Int(report.prediction.effectiveTdee.rounded()))", "kcal")
+                    extraTile("Progress", "\(Int(report.prediction.progressPercent.rounded()))%", "to target")
+                    extraTile("Score", "\(report.consistencyScore)", trendLabel(report.trend))
+                }
+                ForEach(report.prediction.improvementTips.prefix(3), id: \.self) { tip in
+                    Text(tip)
+                        .font(.system(size: 13))
+                        .foregroundStyle(Palette.textMuted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Button("Edit warrior stats", action: onEditStats)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Palette.ember)
+            } else {
                 Text(tip)
                     .font(.system(size: 15, weight: .medium))
                     .foregroundStyle(Palette.textPrimary)
                     .fixedSize(horizontal: false, vertical: true)
-                Text("TDEE calorie, training, and sleep insights unlock with warrior stats in a later native pass.")
-                    .font(.system(size: 13))
-                    .foregroundStyle(Palette.textMuted)
-                    .lineSpacing(3)
+                Button("Enter warrior stats", action: onEditStats)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Palette.ember)
             }
         }
         .padding(.vertical, 6)
+    }
+
+    private func trendLabel(_ trend: ProgressTrend) -> String {
+        switch trend {
+        case .improving: return "improving"
+        case .stagnant: return "holding"
+        case .declining: return "slipping"
+        }
     }
 
     private var tip: String {

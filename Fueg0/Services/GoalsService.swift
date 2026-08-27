@@ -53,6 +53,28 @@ struct GoalsService {
         Self.dayFormatter.string(from: date)
     }
 
+    func generateId() -> String {
+        "goal_\(Int(Date().timeIntervalSince1970 * 1000))_\(Int.random(in: 1000...9999))"
+    }
+
+    func saveGoals(_ goals: [DailyGoal]) {
+        let payload: [[String: String]] = goals.map {
+            [
+                "id": $0.id,
+                "title": $0.title,
+                "description": $0.description,
+                "createdAt": $0.createdAt
+            ]
+        }
+        guard let data = try? JSONSerialization.data(withJSONObject: payload),
+              let raw = String(data: data, encoding: .utf8) else { return }
+        defaults.set(raw, forKey: FlutterPrefs.customDailyGoals)
+    }
+
+    func resetToDefaults() {
+        saveGoals(Self.defaultGoals)
+    }
+
     func loadGoals() -> [DailyGoal] {
         guard let raw = defaults.string(forKey: FlutterPrefs.customDailyGoals),
               let data = raw.data(using: .utf8) else {

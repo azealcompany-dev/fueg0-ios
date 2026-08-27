@@ -44,6 +44,11 @@ enum FlutterPrefs {
     static let customDailyGoals = "custom_daily_goals"
     static let goalsMigrated = "goals_id_migrated_v1"
     static let tribeUserContributions = "tribe_user_total_contributions"
+    static let bodyMetrics = "warrior_body_metrics"
+    static let unlockedAchievements = "unlocked_achievements"
+    static let notificationsEnabled = "notifications_enabled"
+    static let notificationHour = "notification_hour"
+    static let notificationMinute = "notification_minute"
 
     static func goalCompletion(_ date: String) -> String {
         "goal_completion_\(date)"
@@ -58,6 +63,8 @@ enum FlutterPrefs {
         defaults.removeObject(forKey: customDailyGoals)
         defaults.removeObject(forKey: goalsMigrated)
         defaults.removeObject(forKey: tribeUserContributions)
+        defaults.removeObject(forKey: bodyMetrics)
+        defaults.removeObject(forKey: unlockedAchievements)
         for key in defaults.dictionaryRepresentation().keys {
             if key.hasPrefix("goal_completion_")
                 || key.hasPrefix("tribe_goal_awarded_")

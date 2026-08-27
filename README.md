@@ -26,11 +26,12 @@ In this native port:
 - Progress: native Daily Laws checklist (Flutter prefs + tribe awards)
 - StoreKit 2 paywall for `fueg0_premium_monthly` (7-day intro offer from the store)
 - Account deletion in Settings (Firestore `users/{uid}` + Auth user, with password or Google reauth)
+- Custom daily laws editor, achievements, warrior stats / TDEE prediction
+- Daily reminder notifications and local progress reset
 
 Still Flutter-only:
 
-- Body metrics, custom goals editor, achievements
-- Notifications, progress reset
+- Profile photo, Sign in with Apple
 
 ## Generate & build
 

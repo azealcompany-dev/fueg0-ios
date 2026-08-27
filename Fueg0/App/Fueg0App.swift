@@ -23,6 +23,9 @@ struct Fueg0App: App {
                 .onOpenURL { url in
                     GIDSignIn.sharedInstance.handle(url)
                 }
+                .task {
+                    await NotificationService.scheduleIfEnabled()
+                }
         }
     }
 
