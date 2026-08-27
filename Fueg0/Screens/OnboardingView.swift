@@ -1,0 +1,237 @@
+import SwiftUI
+
+struct OnboardingView: View {
+    @Environment(AppSession.self) private var session
+
+    @State private var page = 0
+    @State private var name = ""
+    @State private var selectedTribe: Tribe?
+
+    private let pageCount = 4
+
+    var body: some View {
+        VStack(spacing: 0) {
+            header
+            TabView(selection: $page) {
+                welcomePage.tag(0)
+                ritualPage.tag(1)
+                tribesPage.tag(2)
+                namePage.tag(3)
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .animation(.easeOut(duration: 0.35), value: page)
+
+            indicator
+                .padding(.vertical, Spacing.md)
+
+            footer
+                .fueg0ScreenPadding()
+                .padding(.bottom, Spacing.lg)
+        }
+        .background(Palette.background.ignoresSafeArea())
+    }
+
+    private var header: some View {
+        HStack {
+            Text("Fueg0")
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(Palette.textPrimary)
+            Spacer()
+            if page < pageCount - 1 {
+                Button("Skip") {
+                    page = pageCount - 1
+                }
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(Palette.textMuted)
+            }
+        }
+        .fueg0ScreenPadding()
+        .padding(.top, Spacing.sm)
+        .padding(.bottom, Spacing.sm)
+    }
+
+    private var welcomePage: some View {
+        OnboardingCopy(
+            kicker: "Fueg0",
+            title: "Welcome, warrior.",
+            copy: "Not a fitness app. A daily war against weakness.\nEvery sunrise is your call to battle."
+        )
+    }
+
+    private var ritualPage: some View {
+        OnboardingCopy(
+            kicker: "The ritual",
+            title: "Ignite each day.",
+            copy: "Watch the fire speech. Crush the WOD.\nBurn the excuses to ash."
+        )
+    }
+
+    private var tribesPage: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: Spacing.md) {
+                OnboardingCopy(
+                    kicker: "Tribe",
+                    title: "Rise together.",
+                    copy: "Pick a pack. Earn points together. Fall alone.",
+                    padded: false
+                )
+
+                LazyVStack(spacing: 8) {
+                    ForEach(Tribe.all) { tribe in
+                        TribeRow(tribe: tribe, selected: selectedTribe?.id == tribe.id) {
+                            selectedTribe = tribe
+                        }
+                    }
+                }
+            }
+            .fueg0ScreenPadding()
+            .padding(.bottom, Spacing.md)
+        }
+    }
+
+    private var namePage: some View {
+        OnboardingCopy(
+            kicker: "Name",
+            title: "Who walks in?",
+            copy: "Claim the name you bring into the fire."
+        ) {
+            TextField("Your name", text: $name)
+                .textInputAutocapitalization(.words)
+                .autocorrectionDisabled()
+                .font(.system(size: 18, weight: .regular))
+                .foregroundStyle(Palette.textPrimary)
+                .tint(Palette.ember)
+                .padding(.horizontal, Spacing.md)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: Spacing.radiusMd, style: .continuous)
+                        .fill(Palette.surfaceElevated)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: Spacing.radiusMd, style: .continuous)
+                        .stroke(name.isEmpty ? Palette.hairline : Palette.emberBorder, lineWidth: 1)
+                )
+        }
+    }
+
+    private var indicator: some View {
+        HStack(spacing: 6) {
+            ForEach(0..<pageCount, id: \.self) { index in
+                Capsule()
+                    .fill(index == page ? Palette.ember : Palette.textMuted.opacity(0.35))
+                    .frame(width: index == page ? 18 : 6, height: 6)
+                    .animation(.easeOut(duration: 0.25), value: page)
+            }
+        }
+    }
+
+    private var footer: some View {
+        Group {
+            if page == pageCount - 1 {
+                EmberButton(title: "Enter the fire") {
+                    session.completeOnboarding(name: name, tribe: selectedTribe)
+                }
+            } else {
+                EmberButton(title: "Continue") {
+                    page += 1
+                }
+            }
+        }
+    }
+}
+
+private struct OnboardingCopy<Extra: View>: View {
+    let kicker: String
+    let title: String
+    let copy: String
+    var padded: Bool = true
+    @ViewBuilder var extra: Extra
+
+    init(
+        kicker: String,
+        title: String,
+        copy: String,
+        padded: Bool = true,
+        @ViewBuilder extra: () -> Extra
+    ) {
+        self.kicker = kicker
+        self.title = title
+        self.copy = copy
+        self.padded = padded
+        self.extra = extra()
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Spacer(minLength: padded ? 24 : 8)
+            Text(kicker)
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(Palette.ember)
+            Text(title)
+                .font(.system(size: 34, weight: .bold))
+                .foregroundStyle(Palette.textPrimary)
+                .padding(.top, Spacing.md)
+            Text(copy)
+                .font(.system(size: 16, weight: .regular))
+                .foregroundStyle(Palette.textSecondary)
+                .lineSpacing(5)
+                .padding(.top, Spacing.lg)
+            extra
+                .padding(.top, Spacing.xl)
+            Spacer(minLength: 12)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, padded ? Spacing.screen : 0)
+    }
+}
+
+extension OnboardingCopy where Extra == EmptyView {
+    init(kicker: String, title: String, copy: String, padded: Bool = true) {
+        self.init(kicker: kicker, title: title, copy: copy, padded: padded) {
+            EmptyView()
+        }
+    }
+}
+
+private struct TribeRow: View {
+    let tribe: Tribe
+    let selected: Bool
+    var onSelect: () -> Void
+
+    var body: some View {
+        Button(action: onSelect) {
+            HStack(spacing: 12) {
+                Image(systemName: tribe.symbol)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(selected ? Palette.ember : Palette.textSecondary)
+                    .frame(width: 28)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(tribe.name)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(Palette.textPrimary)
+                    Text(tribe.motto)
+                        .font(.system(size: 13))
+                        .foregroundStyle(Palette.textMuted)
+                }
+
+                Spacer()
+
+                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(selected ? Palette.ember : Palette.textMuted)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: Spacing.radiusSm, style: .continuous)
+                    .fill(Palette.surface)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: Spacing.radiusSm, style: .continuous)
+                    .stroke(selected ? Palette.emberBorder : Palette.hairline, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+}
