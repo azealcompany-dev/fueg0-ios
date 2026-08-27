@@ -6,6 +6,7 @@ struct OnboardingView: View {
     @State private var page = 0
     @State private var name = ""
     @State private var selectedTribe: Tribe?
+    @State private var didPrefill = false
 
     private let pageCount = 4
 
@@ -29,6 +30,16 @@ struct OnboardingView: View {
                 .padding(.bottom, Spacing.lg)
         }
         .background(Palette.background.ignoresSafeArea())
+        .onAppear {
+            guard !didPrefill else { return }
+            didPrefill = true
+            if name.isEmpty, session.displayName != "Warrior" {
+                name = session.displayName
+            }
+            if selectedTribe == nil {
+                selectedTribe = session.tribe
+            }
+        }
     }
 
     private var header: some View {

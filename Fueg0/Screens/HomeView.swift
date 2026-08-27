@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(AppSession.self) private var session
+    @State private var showIgnite = false
 
     private var tomorrow: String {
         let date = Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date()
@@ -9,8 +10,6 @@ struct HomeView: View {
     }
 
     var body: some View {
-        @Bindable var session = session
-
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.xl) {
@@ -18,7 +17,7 @@ struct HomeView: View {
                     quote
                     EmberButton(title: session.ignitedToday ? "Reignite" : "Ignite") {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                        session.ignite()
+                        showIgnite = true
                     }
                     missions
                 }
@@ -28,11 +27,8 @@ struct HomeView: View {
             }
             .background(Palette.background.ignoresSafeArea())
             .navigationBarHidden(true)
-            .sheet(isPresented: $session.showIgnite) {
+            .fullScreenCover(isPresented: $showIgnite) {
                 IgniteView()
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.visible)
-                    .presentationBackground(Palette.background)
             }
         }
     }

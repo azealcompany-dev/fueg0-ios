@@ -12,6 +12,9 @@ struct RootView: View {
                 SplashView {
                     session.finishSplash()
                 }
+            case .login:
+                LoginView()
+                    .transition(.opacity)
             case .onboarding:
                 OnboardingView()
                     .transition(.opacity)

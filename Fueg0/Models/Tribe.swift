@@ -106,9 +106,6 @@ enum SampleContent {
         Mission(id: 2, title: "Night Ops", detail: "Lights out before 22:00", xp: 60)
     ]
 
-    static let todaysWODTitle = "Fran"
-    static let todaysWODDetail = "21–15–9\nThrusters (95/65)\nPull-ups"
-
     static func quote(for date: Date = .now) -> String {
         let day = Calendar.current.ordinality(of: .day, in: .year, for: date) ?? 1
         return quotes[day % quotes.count]

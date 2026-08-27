@@ -3,23 +3,109 @@ import SwiftUI
 struct EmberButton: View {
     let title: String
     var enabled: Bool = true
+    var loading: Bool = false
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            ZStack {
+                Text(title)
+                    .font(.system(size: 17, weight: .semibold))
+                    .opacity(loading ? 0 : 1)
+                if loading {
+                    ProgressView()
+                        .tint(Palette.onEmber)
+                }
+            }
+            .foregroundStyle(enabled ? Palette.onEmber : Palette.textMuted)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: Spacing.radiusMd, style: .continuous)
+                    .fill(enabled ? Palette.ember : Palette.surfaceElevated)
+            )
+        }
+        .buttonStyle(.plain)
+        .disabled(!enabled || loading)
+        .accessibilityAddTraits(.isButton)
+    }
+}
+
+struct EmberOutlineButton: View {
+    let title: String
+    var enabled: Bool = true
     var action: () -> Void
 
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(enabled ? Palette.onEmber : Palette.textMuted)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(enabled ? Palette.textPrimary : Palette.textMuted)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
+                .padding(.vertical, 15)
                 .background(
                     RoundedRectangle(cornerRadius: Spacing.radiusMd, style: .continuous)
-                        .fill(enabled ? Palette.ember : Palette.surfaceElevated)
+                        .stroke(Palette.hairline, lineWidth: 1)
                 )
         }
         .buttonStyle(.plain)
         .disabled(!enabled)
-        .accessibilityAddTraits(.isButton)
+    }
+}
+
+struct Fueg0Field<Trailing: View>: View {
+    let title: String
+    @Binding var text: String
+    var secure: Bool = false
+    @ViewBuilder var trailing: Trailing
+
+    init(
+        title: String,
+        text: Binding<String>,
+        secure: Bool = false,
+        @ViewBuilder trailing: () -> Trailing
+    ) {
+        self.title = title
+        self._text = text
+        self.secure = secure
+        self.trailing = trailing()
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(Palette.textMuted)
+            HStack(spacing: 8) {
+                Group {
+                    if secure {
+                        SecureField("", text: $text)
+                    } else {
+                        TextField("", text: $text)
+                    }
+                }
+                .font(.system(size: 17, weight: .regular))
+                .foregroundStyle(Palette.textPrimary)
+                .tint(Palette.ember)
+                trailing
+            }
+            .padding(.horizontal, Spacing.md)
+            .padding(.vertical, 14)
+            .background(
+                RoundedRectangle(cornerRadius: Spacing.radiusMd, style: .continuous)
+                    .fill(Palette.surfaceElevated)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: Spacing.radiusMd, style: .continuous)
+                    .stroke(text.isEmpty ? Palette.hairline : Palette.emberBorder, lineWidth: 1)
+            )
+        }
+    }
+}
+
+extension Fueg0Field where Trailing == EmptyView {
+    init(title: String, text: Binding<String>, secure: Bool = false) {
+        self.init(title: title, text: text, secure: secure) { EmptyView() }
     }
 }
 

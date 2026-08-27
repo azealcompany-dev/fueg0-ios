@@ -2,7 +2,7 @@
 
 **No excuses. Only fire.**
 
-Native SwiftUI iPhone shell for Fueg0. The Flutter app at `../fueg0` remains the product spec and still owns live Firebase auth, daily fire video, WODs, streak lock, tribe war room, paywall, and the rest of feature parity.
+Native SwiftUI iPhone app for Fueg0. The Flutter app at `../fueg0` remains the product spec.
 
 ## Identity
 
@@ -12,19 +12,20 @@ Native SwiftUI iPhone shell for Fueg0. The Flutter app at `../fueg0` remains the
 - Version: 1.0 (1)
 - iOS 17+
 
-## Milestone 1
+## Milestone 2
 
 In this native port:
 
-- Splash, onboarding (welcome / ignite ritual / tribes / name), home
-- Tab shell for Tribe, Progress, Settings (designed “coming in this native port” screens)
-- San Francisco, warm black, ember used sparingly
-- App icon and `GoogleService-Info.plist` copied from the Flutter iOS target
+- Firebase Auth (email/password + Google Sign-In) and Firestore `users/{uid}`
+- Session: signed-out → login; signed-in + not onboarded → onboarding; else home
+- Splash, onboarding, home
+- Ignite ritual: today’s WOD (daily rotation), lock the chain, local XP/streak
+- Tab shell for Tribe, Progress, Settings
 
 Still Flutter-only:
 
-- Google Sign-In / Firebase Auth / Firestore
-- Daily Fire YouTube, Hell Fire, streak calendar
+- Daily Fire YouTube (no API key in this repo)
+- Hell Fire canvas, streak calendar
 - Tribe war room, leaderboard, feed
 - 6 Daily Laws, body metrics, custom goals, achievements
 - Premium paywall / StoreKit, notifications, progress reset
@@ -36,4 +37,4 @@ xcodegen generate
 xcodebuild -scheme Fueg0 -destination 'platform=iOS Simulator,name=iPhone 16e' -configuration Debug build
 ```
 
-`GoogleService-Info.plist` is present for a future Firebase SPM add. Do not invent API keys. Live auth is a milestone 2 TODO.
+`GoogleService-Info.plist` is copied from the Flutter iOS target. Do not invent API keys.

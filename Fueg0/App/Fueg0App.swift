@@ -1,11 +1,14 @@
+import GoogleSignIn
 import SwiftUI
 
 @main
 struct Fueg0App: App {
-    @State private var session = AppSession()
+    @State private var session: AppSession
 
     init() {
+        FirebaseBootstrap.configure()
         Self.configureChrome()
+        _session = State(initialValue: AppSession())
     }
 
     var body: some Scene {
@@ -14,6 +17,9 @@ struct Fueg0App: App {
                 .environment(session)
                 .preferredColorScheme(.dark)
                 .tint(Palette.ember)
+                .onOpenURL { url in
+                    GIDSignIn.sharedInstance.handle(url)
+                }
         }
     }
 

@@ -11,18 +11,23 @@ struct SettingsHubView: View {
                         Text(session.displayName)
                             .font(.system(size: 20, weight: .semibold))
                             .foregroundStyle(Palette.textPrimary)
-                        Text(session.tribe?.name ?? "No tribe")
+                        Text(session.userEmail ?? session.tribe?.name ?? "No tribe")
                             .font(.system(size: 14))
                             .foregroundStyle(Palette.textMuted)
+                        if session.userEmail != nil, let tribe = session.tribe {
+                            Text(tribe.name)
+                                .font(.system(size: 14))
+                                .foregroundStyle(Palette.textMuted)
+                        }
                     }
                 }
 
                 SurfaceCard {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Coming in this native port")
+                        Text("Account")
                             .font(.system(size: 15, weight: .semibold))
                             .foregroundStyle(Palette.textPrimary)
-                        Text("Google Sign-In, notifications, legendary-speeches toggle, paywall, legal, and full progress reset remain Flutter-only. Live Firebase is a milestone 2 TODO — the plist is copied, no invented keys.")
+                        Text("Signed in with email/password or Google. Warrior name lives on this device and in Firestore users/{uid}.")
                             .font(.system(size: 14))
                             .foregroundStyle(Palette.textMuted)
                             .lineSpacing(3)
@@ -40,6 +45,21 @@ struct SettingsHubView: View {
                         .background(
                             RoundedRectangle(cornerRadius: Spacing.radiusMd, style: .continuous)
                                 .stroke(Palette.hairline, lineWidth: 1)
+                        )
+                }
+                .buttonStyle(.plain)
+
+                Button {
+                    session.signOut()
+                } label: {
+                    Text("Sign out")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(Palette.error)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(
+                            RoundedRectangle(cornerRadius: Spacing.radiusMd, style: .continuous)
+                                .stroke(Palette.error.opacity(0.35), lineWidth: 1)
                         )
                 }
                 .buttonStyle(.plain)
