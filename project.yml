@@ -71,11 +71,40 @@ targets:
           ONLY_ACTIVE_ARCH: true
         Release:
           SWIFT_OPTIMIZATION_LEVEL: "-O"
+  Fueg0Tests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Fueg0Tests
+        excludes:
+          - LinuxMain.swift
+    dependencies:
+      - target: Fueg0
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.azealcompany.fueg0.tests
+        GENERATE_INFOPLIST_FILE: YES
+        IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+        SWIFT_VERSION: "5.9"
+        DEVELOPMENT_TEAM: B8VKLXY4L2
+        CODE_SIGN_STYLE: Automatic
+        SDKROOT: iphoneos
+        TARGETED_DEVICE_FAMILY: "1"
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+        SUPPORTS_MACCATALYST: false
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Fueg0.app/Fueg0"
+        BUNDLE_LOADER: "$(TEST_HOST)"
 schemes:
   Fueg0:
     build:
       targets:
         Fueg0: all
+        Fueg0Tests: [test]
+    test:
+      config: Debug
+      targets:
+        - Fueg0Tests
     run:
       config: Debug
       storeKitConfiguration: ../Fueg0.storekit

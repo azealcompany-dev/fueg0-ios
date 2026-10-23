@@ -7,17 +7,32 @@ struct IgniteView: View {
     @State private var showingBurn = true
     @State private var result: IgniteResult?
     @State private var completing = false
-    @State private var dailyVideo: DailyVideo?
+    @State private var feed: [DailyVideo] = []
+    @State private var feedIndex = 0
+    @State private var fireNotice: String?
     @State private var fireLoading = true
-    @State private var fireFailed = false
+    @State private var fireUnavailable = false
+    @State private var softPlaybackFailures = 0
+    @State private var loadGeneration = 0
 
     private var wod: (title: String, detail: String) {
         SampleContent.todaysWOD()
     }
 
+    private var currentFire: DailyVideo? {
+        feed.indices.contains(feedIndex) ? feed[feedIndex] : nil
+    }
+
     private var fireQuote: String {
-        if let quote = dailyVideo?.quote, !quote.isEmpty { return quote }
+        if let quote = currentFire?.quote, !quote.isEmpty { return quote }
         return SampleContent.quote()
+    }
+
+    private var fireFailureMessage: String {
+        if feed.isEmpty {
+            return "No motivational videos loaded."
+        }
+        return "Can't play YouTube right now."
     }
 
     var body: some View {
@@ -49,11 +64,27 @@ struct IgniteView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.lg) {
                     DailyFirePlayer(
-                        video: dailyVideo,
-                        failed: fireFailed,
+                        video: currentFire,
+                        failed: fireUnavailable,
                         loading: fireLoading,
-                        onRetry: { Task { await loadFire(force: true) } }
+                        failureMessage: fireFailureMessage,
+                        onRetry: { Task { await loadFire(force: true) } },
+                        onPlaying: { id in notePlaying(id) },
+                        onUnplayable: { id, code in noteUnplayable(id: id, code: code) }
                     )
+
+                    if let title = currentFire?.title, !title.isEmpty, !fireUnavailable, !fireLoading {
+                        Text(title)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(Palette.textPrimary)
+                    }
+
+                    if let fireNotice, !fireNotice.isEmpty {
+                        Text(fireNotice)
+                            .font(.system(size: 13))
+                            .foregroundStyle(Palette.textSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
 
                     Text("Today’s fire")
                         .font(.system(size: 13, weight: .semibold))
@@ -147,12 +178,42 @@ struct IgniteView: View {
     }
 
     private func loadFire(force: Bool = false) async {
-        fireLoading = dailyVideo == nil
-        fireFailed = false
-        let video = await DailyFireService.video(forToday: force)
-        dailyVideo = video
+        loadGeneration += 1
+        let generation = loadGeneration
+        fireLoading = true
+        fireUnavailable = false
+        softPlaybackFailures = 0
+        feedIndex = 0
+        let loaded = await DailyFireService.loadFeed(forceRefresh: force)
+        guard generation == loadGeneration else { return }
+        feed = loaded.videos
+        fireNotice = loaded.notice
         fireLoading = false
-        fireFailed = video.videoId.isEmpty
+        fireUnavailable = loaded.videos.isEmpty
+    }
+
+    private func notePlaying(_ id: String) {
+        guard currentFire?.videoId == id else { return }
+        softPlaybackFailures = 0
+        DailyFireService.rememberPlayed(id)
+    }
+
+    private func noteUnplayable(id: String, code: String) {
+        guard currentFire?.videoId == id, !fireUnavailable else { return }
+        if YouTubePlaybackFailure.videoFaultCodes.contains(code) {
+            DailyFireService.block(id)
+        } else {
+            softPlaybackFailures += 1
+            if softPlaybackFailures >= 2 {
+                fireUnavailable = true
+                return
+            }
+        }
+        if feedIndex + 1 < feed.count {
+            feedIndex += 1
+        } else {
+            fireUnavailable = true
+        }
     }
 
     private func complete() async {

@@ -44,12 +44,16 @@ xcodebuild -scheme Fueg0 -destination 'platform=iOS Simulator,name=iPhone 16e' -
 
 ### YouTube Daily Fire
 
-Ignite loads one motivational video per day from the YouTube Data API v3. Copy the example plist and paste the key from the Flutter app (`../fueg0/lib/core/config/secrets.dart`):
+Ignite plays a shuffled feed of motivational videos in the official YouTube IFrame player (streamed, not downloaded). Each app session and each calendar day gets a new order. The video you just finished is not the first one next time.
+
+Search uses the YouTube Data API v3 when a key is configured. Without a key, or when YouTube returns a quota error, a network error, or nothing playable, Ignite plays the bundled list in `MotivationalCatalog` (`Fueg0/Services/DailyFireEngine.swift`). Removed or embed-restricted videos are skipped. If playback itself cannot reach YouTube, the player shows a retry message instead of a blank screen.
+
+Do not commit a key. Copy the example plist and paste a key restricted to the iOS bundle `com.azealcompany.fueg0` and to the YouTube Data API:
 
 ```bash
 cp Secrets.example.plist Fueg0/Config/Secrets.plist
 ```
 
-`Fueg0/Config/Secrets.plist` is gitignored. Without a key, Ignite still plays the Goggins fallback. Restrict the key to this iOS bundle before testers hit quota.
+`Fueg0/Config/Secrets.plist` is gitignored. Set `YouTubeAPIKey` in that file. A local build can also set the `YOUTUBE_API_KEY` environment variable, which wins over the plist. Requests send `X-Ios-Bundle-Identifier: com.azealcompany.fueg0`, which an iOS-restricted key requires. The feed still plays from the bundled list when the key is missing.
 
 `Fueg0.storekit` is a local StoreKit configuration (monthly + 7-day free intro). Device purchases still need the product in App Store Connect. Entitlement comes from StoreKit 2 `Transaction.currentEntitlement`, not a local trial flag.

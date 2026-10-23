@@ -2,13 +2,12 @@ import SwiftUI
 import WebKit
 
 struct YouTubePlayerView: UIViewRepresentable {
-    let videoId: String
-    var playNonce: Int
-    var onPlaying: () -> Void
-    var onError: () -> Void
+    var videoID: String
+    var onPlaying: (String) -> Void
+    var onUnplayable: (String, String) -> Void
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(onPlaying: onPlaying, onError: onError)
+        Coordinator(onPlaying: onPlaying, onUnplayable: onUnplayable)
     }
 
     func makeUIView(context: Context) -> WKWebView {
@@ -28,47 +27,61 @@ struct YouTubePlayerView: UIViewRepresentable {
         webView.scrollView.bounces = false
         webView.navigationDelegate = context.coordinator
         context.coordinator.webView = webView
-        context.coordinator.load(videoId: videoId)
+        context.coordinator.load(videoID: videoID)
         return webView
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
         context.coordinator.onPlaying = onPlaying
-        context.coordinator.onError = onError
-        if context.coordinator.loadedId != videoId {
-            context.coordinator.load(videoId: videoId)
-        } else if playNonce != context.coordinator.lastPlayNonce {
-            context.coordinator.lastPlayNonce = playNonce
-            context.coordinator.play()
+        context.coordinator.onUnplayable = onUnplayable
+        if context.coordinator.loadedID != videoID {
+            context.coordinator.load(videoID: videoID)
         }
     }
 
     static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        coordinator.invalidate()
         uiView.configuration.userContentController.removeScriptMessageHandler(forName: "fueg0")
+        uiView.navigationDelegate = nil
         uiView.stopLoading()
         coordinator.webView = nil
     }
 
     final class Coordinator: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
-        var onPlaying: () -> Void
-        var onError: () -> Void
+        var onPlaying: (String) -> Void
+        var onUnplayable: (String, String) -> Void
         weak var webView: WKWebView?
-        var loadedId = ""
-        var lastPlayNonce = 0
+        var loadedID = ""
+        private var failed = false
+        private var timeout: DispatchWorkItem?
+        private let origin = YouTubeEmbed.origin(bundleID: Bundle.main.bundleIdentifier)
 
-        init(onPlaying: @escaping () -> Void, onError: @escaping () -> Void) {
+        init(onPlaying: @escaping (String) -> Void, onUnplayable: @escaping (String, String) -> Void) {
             self.onPlaying = onPlaying
-            self.onError = onError
+            self.onUnplayable = onUnplayable
         }
 
-        func load(videoId: String) {
-            loadedId = videoId
-            let html = Self.html(videoId: videoId)
-            webView?.loadHTMLString(html, baseURL: URL(string: "https://www.youtube.com"))
+        func load(videoID: String) {
+            failed = false
+            loadedID = videoID
+            timeout?.cancel()
+            guard let html = YouTubeEmbed.html(videoID: videoID, origin: origin),
+                  let baseURL = URL(string: origin) else {
+                fail(code: "2")
+                return
+            }
+            let work = DispatchWorkItem { [weak self] in
+                self?.fail(code: "timeout")
+            }
+            timeout = work
+            DispatchQueue.main.asyncAfter(deadline: .now() + 18, execute: work)
+            webView?.loadHTMLString(html, baseURL: baseURL)
         }
 
-        func play() {
-            webView?.evaluateJavaScript("window.fueg0Play && window.fueg0Play();")
+        func invalidate() {
+            failed = true
+            timeout?.cancel()
+            timeout = nil
         }
 
         func userContentController(
@@ -76,67 +89,34 @@ struct YouTubePlayerView: UIViewRepresentable {
             didReceive message: WKScriptMessage
         ) {
             let body = (message.body as? String) ?? ""
-            if body == "playing" {
-                DispatchQueue.main.async { self.onPlaying() }
+            if body == "ready" {
+                timeout?.cancel()
+            } else if body == "playing" {
+                timeout?.cancel()
+                let id = loadedID
+                let callback = onPlaying
+                DispatchQueue.main.async { callback(id) }
             } else if body.hasPrefix("error") {
-                DispatchQueue.main.async { self.onError() }
+                let code = body.split(separator: ":", maxSplits: 1).dropFirst().first.map(String.init) ?? "unknown"
+                fail(code: code)
             }
         }
 
-        private static func html(videoId: String) -> String {
-            let id = String(videoId.filter { $0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" }.prefix(20))
-            return """
-            <!DOCTYPE html>
-            <html>
-            <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-            <style>
-              html, body { margin: 0; background: #000; height: 100%; overflow: hidden; }
-              #player { position: absolute; inset: 0; }
-            </style>
-            </head>
-            <body>
-            <div id="player"></div>
-            <script>
-              var tag = document.createElement('script');
-              tag.src = "https://www.youtube.com/iframe_api";
-              document.head.appendChild(tag);
-              var player;
-              function onYouTubeIframeAPIReady() {
-                player = new YT.Player('player', {
-                  width: '100%',
-                  height: '100%',
-                  videoId: '\(id)',
-                  playerVars: {
-                    autoplay: 1,
-                    playsinline: 1,
-                    rel: 0,
-                    modestbranding: 1,
-                    controls: 0,
-                    fs: 0,
-                    cc_load_policy: 0,
-                    origin: 'https://www.youtube.com'
-                  },
-                  events: {
-                    onReady: function(e) { e.target.playVideo(); },
-                    onStateChange: function(e) {
-                      if (e.data === 1) {
-                        window.webkit.messageHandlers.fueg0.postMessage('playing');
-                      }
-                    },
-                    onError: function() {
-                      window.webkit.messageHandlers.fueg0.postMessage('error');
-                    }
-                  }
-                });
-              }
-              window.fueg0Play = function() {
-                if (player && player.playVideo) { player.playVideo(); }
-              };
-            </script>
-            </body>
-            </html>
-            """
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            fail(code: "network")
+        }
+
+        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+            fail(code: "network")
+        }
+
+        private func fail(code: String) {
+            guard !failed else { return }
+            failed = true
+            timeout?.cancel()
+            let id = loadedID
+            let callback = onUnplayable
+            DispatchQueue.main.async { callback(id, code) }
         }
     }
 }
@@ -145,76 +125,54 @@ struct DailyFirePlayer: View {
     let video: DailyVideo?
     let failed: Bool
     let loading: Bool
+    var failureMessage: String
     var onRetry: () -> Void
-
-    @State private var showOverlay = true
-    @State private var playNonce = 0
-    @State private var playerFailed = false
-
-    private var needsReload: Bool { failed || playerFailed || video == nil }
+    var onPlaying: (String) -> Void
+    var onUnplayable: (String, String) -> Void
 
     var body: some View {
         ZStack {
             Palette.surfaceElevated
-
-            if let video, !video.videoId.isEmpty {
+            if loading {
+                ProgressView()
+                    .tint(Palette.ember)
+                    .accessibilityLabel("Loading motivational videos")
+            } else if let video, !failed, DailyFireID.isPlayable(video.videoId) {
                 YouTubePlayerView(
-                    videoId: video.videoId,
-                    playNonce: playNonce,
-                    onPlaying: {
-                        playerFailed = false
-                        showOverlay = false
-                    },
-                    onError: {
-                        playerFailed = true
-                        showOverlay = true
-                    }
+                    videoID: video.videoId,
+                    onPlaying: onPlaying,
+                    onUnplayable: onUnplayable
                 )
                 .id(video.videoId)
-            }
-
-            if loading && video == nil {
-                ProgressView().tint(Palette.ember)
-            } else if showOverlay || needsReload {
-                overlay
+                .accessibilityLabel(video.title)
+            } else {
+                failure
             }
         }
         .aspectRatio(16 / 9, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: Spacing.radiusLg, style: .continuous))
-        .onChange(of: video?.videoId) { _, _ in
-            showOverlay = true
-            playerFailed = false
-        }
-        .task(id: video?.videoId) {
-            try? await Task.sleep(for: .milliseconds(1600))
-            if !Task.isCancelled, showOverlay, video != nil, !playerFailed {
-                showOverlay = true
-            }
-        }
+        .frame(maxWidth: .infinity, minHeight: 200)
+        .padding(.horizontal, -Spacing.screen)
     }
 
-    private var overlay: some View {
-        Button {
-            if needsReload {
-                playerFailed = false
-                onRetry()
-            } else {
-                playNonce += 1
+    private var failure: some View {
+        Button(action: onRetry) {
+            VStack(spacing: Spacing.sm) {
+                Image(systemName: "flame")
+                    .font(.system(size: 28, weight: .semibold))
+                    .foregroundStyle(Palette.ember)
+                Text(failureMessage)
+                    .font(.system(size: 15, weight: .semibold))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Palette.textPrimary)
+                Text("TAP TO RETRY")
+                    .font(.system(size: 12, weight: .semibold))
+                    .tracking(1.2)
+                    .foregroundStyle(Palette.ember)
             }
-        } label: {
-            ZStack {
-                Color.black.opacity(0.72)
-                VStack(spacing: Spacing.sm) {
-                    Image(systemName: needsReload ? "arrow.clockwise" : "flame.fill")
-                        .font(.system(size: 36, weight: .semibold))
-                        .foregroundStyle(Palette.ember)
-                    Text(needsReload ? "TAP TO RELOAD FIRE" : "TAP TO IGNITE")
-                        .font(.system(size: 12, weight: .semibold))
-                        .tracking(1.2)
-                        .foregroundStyle(Palette.textPrimary)
-                }
-            }
+            .padding(Spacing.lg)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(failureMessage) Tap to retry.")
     }
 }

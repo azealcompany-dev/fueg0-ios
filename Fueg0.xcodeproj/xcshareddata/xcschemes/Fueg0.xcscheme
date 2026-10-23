@@ -21,6 +21,20 @@
                ReferencedContainer = "container:Fueg0.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E7A1C0DE0000000000000010"
+               BuildableName = "Fueg0Tests.xctest"
+               BlueprintName = "Fueg0Tests"
+               ReferencedContainer = "container:Fueg0.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -39,6 +53,17 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E7A1C0DE0000000000000010"
+               BuildableName = "Fueg0Tests.xctest"
+               BlueprintName = "Fueg0Tests"
+               ReferencedContainer = "container:Fueg0.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
